@@ -3,32 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Scripts</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Centered Nested UI Design</title>
+    <style>
+        body {
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;  /* Horizontally center */
+            align-items: center;      /* Vertically center */
+            height: 100vh;            /* Full viewport height */
+            margin: 0;
+        }
+
+        /* Outer Box Container */
+        .ui-box {
+            border: 2px solid #8A008A;  /* Purple outline for outer box */
+            padding: 5px;               /* Adjusted padding for outer box */
+            background-color: #111;      /* Dark background for outer box */
+            width: 600px;               /* Fixed width for outer box */
+        }
+
+        /* Inner Box */
+        .inner-box {
+            border: 1px solid #8A008A;   /* Inner box outline */
+            padding: 2px;                /* Inner padding adjusted */
+            background-color: #222;      /* Slightly lighter background for inner box */
+        }
+
+        /* Title Box with Gradient */
+        .title-box {
+            border: 1px solid #8A008A;   /* Border around the title box */
+            background: linear-gradient(to bottom, #000, #333); /* Dark gradient from black to dark gray */
+            padding: 5px;
+            margin-bottom: 10px;         /* Space between title box and next box */
+            display: flex;                /* Use flexbox for horizontal alignment */
+            align-items: center;          /* Center items vertically */
+            justify-content: flex-start;  /* Align items to start */
+            gap: 10px;                   /* Space between buttons */
+        }
+
+        /* Button Styles */
+        .button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            position: relative;           /* For underline */
+        }
+
+        .button:hover {
+            color: #8A008A;               /* Change color on hover */
+        }
+
+        /* Underline effect */
+        .button.selected::after {
+            content: "";
+            display: block;
+            height: 2px;
+            background-color: #8A008A;    /* Underline color */
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -5px;                  /* Position underline below the text */
+        }
+
+        /* About Box */
+        .about-box, .scripts-box, .credits-box {
+            position: relative;           /* Position relative for the label */
+            border: 1px solid #8A008A;   /* Border around the About section */
+            background-color: #333;      /* Slightly lighter background for settings box */
+            padding: 10px;
+            margin: 25px 10px 400px 10px; /* Adjusted margins */
+            display: none;                /* Hide boxes initially */
+        }
+
+        /* Label on About Box */
+        .about-label, .scripts-label, .credits-label {
+            position: absolute;           /* Positioning it inside the box */
+            top: -10px;                  /* Position above the box */
+            left: 10px;                  /* Position to the left */
+            background-color: #333;      /* Background to match the About box */
+            padding: 0 5px;              /* Padding for label */
+            color: #fff;                 /* Text color */
+        }
+
+        /* Settings Section */
+        .settings {
+            margin-top: 10px;
+        }
+
+        /* Dropdown Menu Styling */
+        select {
+            width: 100%;                 /* Full width for the dropdown */
+            padding: 5px;                /* Padding for the dropdown */
+            background-color: #222;      /* Background color for dropdown */
+            color: #fff;                 /* Text color for dropdown */
+            border: 1px solid #8A008A;   /* Border color */
+        }
+
+        /* Content Box for Selected Item */
+        .content-box {
+            border: 1px solid #8A008A;   /* Border for the content box */
+            background-color: #444;      /* Dark background for content box */
+            padding: 10px;
+            margin-top: 10px;            /* Space between dropdown and content */
+            max-height: 150px;           /* Fixed max height for content box */
+            overflow-y: auto;            /* Scroll if content exceeds max height */
+        }
+
+        /* Checkbox and Label Styling */
+        .checkbox-label {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Slider/Range Input */
+        input[type="range"] {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Combat Masters Script | Spinbot Jump ESP</h1>
-            <div class="settings-icon">
-                <img src="gear-icon.png" alt="Settings">
+
+    <div class="ui-box">
+        <div class="inner-box">
+            <!-- Title Box -->
+            <div class="title-box">
+                <div>Nightly's Debute |</div> <!-- Changed to "Nightly's Debute |" -->
+                <div style="margin-left: auto;"> <!-- This will push the buttons to the right -->
+                    <button class="button" onclick="selectButton('about')">About</button>
+                    <button class="button" onclick="selectButton('scripts')">Scripts</button>
+                    <button class="button" onclick="selectButton('credits')">Credits</button> <!-- Renamed to "Credits" -->
+                </div>
             </div>
-        </div>
-        <div class="content">
-            <h2>Spinbot Settings</h2>
-            <div class="spinbot-settings">
-                <label for="spinbot-checkbox">Spinbot</label>
-                <input type="checkbox" id="spinbot-checkbox">
-                <label for="spin-speed">Spin Speed (Seconds):</label>
-                <input type="number" id="spin-speed" value="1.0">
+            
+            <!-- About Box -->
+            <div class="about-box" id="about-box">
+                <div class="about-label">About</div> <!-- Label for About -->
+                <div class="settings">
+                    <label for="toc">Table of Contents:</label>
+                    <select id="toc" onchange="updateContent('about')">
+                        <option value="">Select an option</option>
+                        <option value="introduction">1. Introduction</option>
+                        <option value="features">2. Features</option>
+                        <option value="usage">3. Usage</option>
+                        <option value="faq">4. FAQ</option>
+                        <option value="support">5. Support</option>
+                    </select>
+                </div>
+                
+                <!-- Content Box for Selected Item -->
+                <div class="content-box" id="content-box">
+                    <p>Please select an item from the Table of Contents.</p>
+                </div>
             </div>
-            <div class="slider-container">
-                <input type="range" min="0.1" max="2" value="1" step="0.1" id="speed-slider">
-                <output id="speed-output">1.0</output>
+
+            <!-- Scripts Box -->
+            <div class="scripts-box" id="scripts-box">
+                <div class="scripts-label">Scripts</div> <!-- Label for Scripts -->
+                <div class="settings">
+                    <label for="script-select">Select Script:</label>
+                    <select id="script-select" onchange="updateScriptContent()">
+                        <option value="">Select a script</option>
+                        <option value="combat-warriors">Combat Warriors</option>
+                    </select>
+                </div>
+                <!-- Content Box for Script Features -->
+                <div class="content-box" id="script-content-box">
+                    <p>Please select a script from the dropdown.</p>
+                </div>
+                <button id="copy-script-btn" onclick="copyScriptLink()" style="display: none;">Copy Script Link</button>
+            </div>
+
+            <!-- Credits Box -->
+            <div class="credits-box" id="credits-box">
+                <div class="credits-label">Credits</div> <!-- Label for Credits -->
+                <div class="content-box">
+                    <h3><strong>Credits:</strong></h3>
+                    <p>Thank you to:</p>
+                    <ul>
+                        <li>Developer: NightlyDrum</li>
+                        <li>Design: NightlyDrum</li>
+                        <li>Scripts: NightlyDrum</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="scripts.js"></script>
+    <script>
+        function selectButton(selected) {
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                if (button.textContent.toLowerCase() === selected) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+            updateDisplay(selected);
+        }
+
+        function updateDisplay(selected) {
+            const aboutBox = document.getElementById('about-box');
+            const scriptsBox = document.getElementById('scripts-box');
+            const creditsBox = document.getElementById('credits-box');
+            if (selected === 'about') {
+                aboutBox.style.display = 'block';
+                scriptsBox.style.display = 'none';
+                creditsBox.style.display = 'none';
+                document.getElementById('toc').value = ''; // Reset the TOC selection
+                updateContent('about'); // Reset the About content
+            } else if (selected === 'scripts') {
+                aboutBox.style.display = 'none';
+                scriptsBox.style.display = 'block';
+                creditsBox.style.display = 'none';
+            } else if (selected === 'credits') {
+                aboutBox.style.display = 'none';
+                scriptsBox.style.display = 'none';
+                creditsBox.style.display = 'block';
+            }
+        }
+
+        function updateContent(section) {
+            const selectedValue = document.getElementById('toc').value;
+            const contentBox = document.getElementById('content-box');
+            let contentText = '';
+
+            switch (selectedValue) {
+                case 'introduction':
+                    contentText = 'This is the introduction section. Here you can find an overview of the project.';
+                    break;
+                case 'features':
+                    contentText = 'Features include various capabilities that enhance your experience.';
+                    break;
+                case 'usage':
+                    contentText = 'Usage instructions go here. Learn how to effectively use the script.';
+                    break;
+                case 'faq':
+                    contentText = 'Frequently Asked Questions will be listed here to assist users.';
+                    break;
+                case 'support':
+                    contentText = 'Support information can be found here for troubleshooting and help.';
+                    break;
+                default:
+                    contentText = 'Please select an item from the Table of Contents.';
+            }
+
+            contentBox.innerHTML = `<p>${contentText}</p>`;
+        }
+
+        function updateScriptContent() {
+            const selectedScript = document.getElementById('script-select').value;
+            const scriptContentBox = document.getElementById('script-content-box');
+            const copyScriptButton = document.getElementById('copy-script-btn');
+
+            if (selectedScript === 'combat-warriors') {
+                scriptContentBox.innerHTML = `
+                    <h3><strong>Combat Warriors</strong></h3>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li><strong>Spinbot:</strong> Adjust how fast you want to spin 360°</li>
+                        <li><strong>ESP (Extra Sensory Perception):</strong></li>
+                        <ul>
+                            <li>Names</li>
+                            <li>Distance</li>
+                            <li>Bounding Box</li>
+                            <li>Health</li>
+                            <li>Apply to Enemies Only</li>
+                        </ul>
+                    </ul>`;
+                copyScriptButton.style.display = 'inline-block'; // Show button
+            } else {
+                scriptContentBox.innerHTML = `<p>Please select a script from the dropdown.</p>`;
+                copyScriptButton.style.display = 'none'; // Hide button
+            }
+        }
+
+        function copyScriptLink() {
+            // Copy the script link to the clipboard (placeholder for the actual link)
+            const scriptLink = "https://example.com/combat-warriors-script"; // Replace with your actual script link
+            navigator.clipboard.writeText(scriptLink).then(() => {
+                alert('Script link copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+
+        // Initialize to show the About section by default
+        document.addEventListener('DOMContentLoaded', () => {
+            selectButton('about');
+        });
+    </script>
+
 </body>
 </html>
+
