@@ -1,3 +1,6 @@
-document.getElementById('explore-btn').addEventListener('click', function() {
-    document.getElementById('scripts').scrollIntoView({ behavior: 'smooth' });
+const slider = document.getElementById('speed-slider');
+const output = document.getElementById('speed-output');
+
+slider.addEventListener('input', function() {
+    output.textContent = this.value;
 });
