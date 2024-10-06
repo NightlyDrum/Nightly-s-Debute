@@ -10,40 +10,36 @@
             font-family: Arial, sans-serif;
             color: #fff;
             display: flex;
-            justify-content: center;  /* Horizontally center */
-            align-items: center;      /* Vertically center */
-            height: 100vh;            /* Full viewport height */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
         }
 
-        /* Outer Box Container */
         .ui-box {
-            border: 2px solid #8A008A;  /* Purple outline for outer box */
-            padding: 5px;               /* Adjusted padding for outer box */
-            background-color: #111;      /* Dark background for outer box */
-            width: 600px;               /* Fixed width for outer box */
-        }
-
-        /* Inner Box */
-        .inner-box {
-            border: 1px solid #8A008A;   /* Inner box outline */
-            padding: 2px;                /* Inner padding adjusted */
-            background-color: #222;      /* Slightly lighter background for inner box */
-        }
-
-        /* Title Box with Gradient */
-        .title-box {
-            border: 1px solid #8A008A;   /* Border around the title box */
-            background: linear-gradient(to bottom, #000, #333); /* Dark gradient from black to dark gray */
+            border: 2px solid #8A008A;
             padding: 5px;
-            margin-bottom: 10px;         /* Space between title box and next box */
-            display: flex;                /* Use flexbox for horizontal alignment */
-            align-items: center;          /* Center items vertically */
-            justify-content: flex-start;  /* Align items to start */
-            gap: 10px;                   /* Space between buttons */
+            background-color: #111;
+            width: 600px;
         }
 
-        /* Button Styles */
+        .inner-box {
+            border: 1px solid #8A008A;
+            padding: 2px;
+            background-color: #222;
+        }
+
+        .title-box {
+            border: 1px solid #8A008A;
+            background: linear-gradient(to bottom, #000, #333);
+            padding: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
         .button {
             background-color: transparent;
             border: none;
@@ -51,76 +47,59 @@
             font-size: 16px;
             cursor: pointer;
             padding: 10px;
-            position: relative;           /* For underline */
+            position: relative;
         }
 
         .button:hover {
-            color: #8A008A;               /* Change color on hover */
+            color: #8A008A;
         }
 
-        /* Underline effect */
         .button.selected::after {
             content: "";
             display: block;
             height: 2px;
-            background-color: #8A008A;    /* Underline color */
+            background-color: #8A008A;
             position: absolute;
             left: 0;
             right: 0;
-            bottom: -5px;                  /* Position underline below the text */
+            bottom: -5px;
         }
 
-        /* About Box */
         .about-box, .scripts-box, .credits-box {
-            position: relative;           /* Position relative for the label */
-            border: 1px solid #8A008A;   /* Border around the About section */
-            background-color: #333;      /* Slightly lighter background for settings box */
+            position: relative;
+            border: 1px solid #8A008A;
+            background-color: #333;
             padding: 10px;
-            margin: 25px 10px 400px 10px; /* Adjusted margins */
-            display: none;                /* Hide boxes initially */
+            margin: 25px 150px 400px 10px;
+            display: none;
         }
 
-        /* Label on About Box */
         .about-label, .scripts-label, .credits-label {
-            position: absolute;           /* Positioning it inside the box */
-            top: -10px;                  /* Position above the box */
-            left: 10px;                  /* Position to the left */
-            background-color: #333;      /* Background to match the About box */
-            padding: 0 5px;              /* Padding for label */
-            color: #fff;                 /* Text color */
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: #333;
+            padding: 0 5px;
+            color: #fff;
         }
 
-        /* Settings Section */
-        .settings {
-            margin-top: 10px;
-        }
-
-        /* Dropdown Menu Styling */
         select {
-            width: 100%;                 /* Full width for the dropdown */
-            padding: 5px;                /* Padding for the dropdown */
-            background-color: #222;      /* Background color for dropdown */
-            color: #fff;                 /* Text color for dropdown */
-            border: 1px solid #8A008A;   /* Border color */
+            width: 100%;
+            padding: 5px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #8A008A;
         }
 
-        /* Content Box for Selected Item */
         .content-box {
-            border: 1px solid #8A008A;   /* Border for the content box */
-            background-color: #444;      /* Dark background for content box */
+            border: 1px solid #8A008A;
+            background-color: #444;
             padding: 10px;
-            margin-top: 10px;            /* Space between dropdown and content */
-            max-height: 150px;           /* Fixed max height for content box */
-            overflow-y: auto;            /* Scroll if content exceeds max height */
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
-        /* Checkbox and Label Styling */
-        .checkbox-label {
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Slider/Range Input */
         input[type="range"] {
             width: 100%;
         }
@@ -132,30 +111,29 @@
         <div class="inner-box">
             <!-- Title Box -->
             <div class="title-box">
-                <div>Nightly's Debute |</div> <!-- Changed to "Nightly's Debute |" -->
-                <div style="margin-left: auto;"> <!-- This will push the buttons to the right -->
+                <div>Nightly's Debute |</div>
+                <div style="margin-left: auto;">
                     <button class="button" onclick="selectButton('about')">About</button>
                     <button class="button" onclick="selectButton('scripts')">Scripts</button>
-                    <button class="button" onclick="selectButton('credits')">Credits</button> <!-- Renamed to "Credits" -->
+                    <button class="button" onclick="selectButton('credits')">Credits</button>
                 </div>
             </div>
-            
+
             <!-- About Box -->
             <div class="about-box" id="about-box">
-                <div class="about-label">About</div> <!-- Label for About -->
+                <div class="about-label">About</div>
                 <div class="settings">
                     <label for="toc">Table of Contents:</label>
                     <select id="toc" onchange="updateContent('about')">
                         <option value="">Select an option</option>
                         <option value="introduction">1. Introduction</option>
-                        <option value="features">2. Features</option>
-                        <option value="usage">3. Usage</option>
-                        <option value="faq">4. FAQ</option>
-                        <option value="support">5. Support</option>
+                        <option value="usage">2. Usage</option>
+                        <option value="faq">3. FAQ</option>
+                        <option value="support">4. Support</option>
+                        <option value="design">5. Design</option>
                     </select>
                 </div>
-                
-                <!-- Content Box for Selected Item -->
+
                 <div class="content-box" id="content-box">
                     <p>Please select an item from the Table of Contents.</p>
                 </div>
@@ -163,32 +141,29 @@
 
             <!-- Scripts Box -->
             <div class="scripts-box" id="scripts-box">
-                <div class="scripts-label">Scripts</div> <!-- Label for Scripts -->
-                <div class="settings">
-                    <label for="script-select">Select Script:</label>
-                    <select id="script-select" onchange="updateScriptContent()">
-                        <option value="">Select a script</option>
-                        <option value="combat-warriors">Combat Warriors</option>
-                    </select>
-                </div>
-                <!-- Content Box for Script Features -->
+                <div class="scripts-label">Scripts</div>
+                <label for="script-select">Select Script:</label>
+                <select id="script-select" onchange="updateScriptContent()">
+                    <option value="">Select a script</option>
+                    <option value="combat-warriors">Combat Warriors</option>
+                </select>
+
                 <div class="content-box" id="script-content-box">
                     <p>Please select a script from the dropdown.</p>
                 </div>
-                <button id="copy-script-btn" onclick="copyScriptLink()" style="display: none;">Copy Script Link</button>
+                <button id="copy-script-btn" style="display: none;" onclick="copyScriptLink()">Copy Script Link</button>
             </div>
 
             <!-- Credits Box -->
             <div class="credits-box" id="credits-box">
-                <div class="credits-label">Credits</div> <!-- Label for Credits -->
+                <div class="credits-label">Credits</div>
                 <div class="content-box">
-                    <h3><strong>Credits:</strong></h3>
-                    <p>Thank you to:</p>
-                    <ul>
-                        <li>Developer: NightlyDrum</li>
-                        <li>Design: NightlyDrum</li>
-                        <li>Scripts: NightlyDrum</li>
-                    </ul>
+                    <h3>Nightly Drum Credits</h3>
+                    <p><strong>Design:</strong> Nightly Drum</p>
+                    <p><strong>Scripts:</strong> Nightly Drum</p>
+                    <p><strong>HTML Page:</strong> Nightly Drum</p>
+                    <p><strong>Development:</strong> Nightly Drum</p>
+                    <p><strong>Testing:</strong> Nightly Drum</p>
                 </div>
             </div>
         </div>
@@ -211,21 +186,9 @@
             const aboutBox = document.getElementById('about-box');
             const scriptsBox = document.getElementById('scripts-box');
             const creditsBox = document.getElementById('credits-box');
-            if (selected === 'about') {
-                aboutBox.style.display = 'block';
-                scriptsBox.style.display = 'none';
-                creditsBox.style.display = 'none';
-                document.getElementById('toc').value = ''; // Reset the TOC selection
-                updateContent('about'); // Reset the About content
-            } else if (selected === 'scripts') {
-                aboutBox.style.display = 'none';
-                scriptsBox.style.display = 'block';
-                creditsBox.style.display = 'none';
-            } else if (selected === 'credits') {
-                aboutBox.style.display = 'none';
-                scriptsBox.style.display = 'none';
-                creditsBox.style.display = 'block';
-            }
+            aboutBox.style.display = selected === 'about' ? 'block' : 'none';
+            scriptsBox.style.display = selected === 'scripts' ? 'block' : 'none';
+            creditsBox.style.display = selected === 'credits' ? 'block' : 'none';
         }
 
         function updateContent(section) {
@@ -235,19 +198,19 @@
 
             switch (selectedValue) {
                 case 'introduction':
-                    contentText = 'This is the introduction section. Here you can find an overview of the project.';
-                    break;
-                case 'features':
-                    contentText = 'Features include various capabilities that enhance your experience.';
+                    contentText = 'This is a place to get my scripts and go through a journey.';
                     break;
                 case 'usage':
-                    contentText = 'Usage instructions go here. Learn how to effectively use the script.';
+                    contentText = 'Go to the scripts tab or find a script online and copy and paste into executor.';
                     break;
                 case 'faq':
-                    contentText = 'Frequently Asked Questions will be listed here to assist users.';
+                    contentText = 'Coming Soon.';
                     break;
                 case 'support':
-                    contentText = 'Support information can be found here for troubleshooting and help.';
+                    contentText = 'Any concerns please go into the discord and make a ticket. Personal email: jdessyt@gmail.com';
+                    break;
+                case 'design':
+                    contentText = 'This design was based off of the pepsis ui lib and the color scheme was made from my favorite colors.';
                     break;
                 default:
                     contentText = 'Please select an item from the Table of Contents.';
@@ -276,24 +239,20 @@
                             <li>Apply to Enemies Only</li>
                         </ul>
                     </ul>`;
-                copyScriptButton.style.display = 'inline-block'; // Show button
+                copyScriptButton.style.display = 'inline-block';
             } else {
                 scriptContentBox.innerHTML = `<p>Please select a script from the dropdown.</p>`;
-                copyScriptButton.style.display = 'none'; // Hide button
+                copyScriptButton.style.display = 'none';
             }
         }
 
         function copyScriptLink() {
-            // Copy the script link to the clipboard (placeholder for the actual link)
-            const scriptLink = "loadstring(game:HttpGet("https://raw.githubusercontent.com/NightlyDrum/Nightly-s-Debute/refs/heads/main/Combat%20WarriorsV1.lua"))()";
+            const scriptLink = `loadstring(game:HttpGet("https://raw.githubusercontent.com/NightlyDrum/Nightly-s-Debute/refs/heads/main/Combat%20WarriorsV1.lua"))()`;
             navigator.clipboard.writeText(scriptLink).then(() => {
                 alert('Script link copied to clipboard!');
-            }).catch(err => {
-                console.error('Error copying text: ', err);
             });
         }
 
-        // Initialize to show the About section by default
         document.addEventListener('DOMContentLoaded', () => {
             selectButton('about');
         });
