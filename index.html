@@ -6,9 +6,9 @@
     <title>Nightly's Debute</title>
     <style>
         body {
-            background-color: #000;
+            background-color: #000;  /* Black background */
             font-family: Arial, sans-serif;
-            color: #fff;
+            color: #FF69B4;  /* Hot pink text color */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,21 +17,21 @@
         }
 
         .ui-box {
-            border: 2px solid #8A008A;
+            border: 2px solid #4B0082;  /* Dark purple outline for outer box */
             padding: 5px;
-            background-color: #111;
+            background-color: #111;  /* Dark background for outer box */
             width: 600px;
         }
 
         .inner-box {
-            border: 1px solid #8A008A;
+            border: 1px solid #4B0082;  /* Dark purple outline for inner box */
             padding: 2px;
-            background-color: #222;
+            background-color: #222;  /* Slightly lighter background for inner box */
         }
 
         .title-box {
-            border: 1px solid #8A008A;
-            background: linear-gradient(to bottom, #000, #333);
+            border: 1px solid #4B0082;  /* Dark purple border around the title box */
+            background: linear-gradient(to bottom, #000, #333);  /* Gradient background */
             padding: 5px;
             margin-bottom: 10px;
             display: flex;
@@ -43,7 +43,7 @@
         .button {
             background-color: transparent;
             border: none;
-            color: #fff;
+            color: #FF69B4;  /* Hot pink text color */
             font-size: 16px;
             cursor: pointer;
             padding: 10px;
@@ -51,14 +51,14 @@
         }
 
         .button:hover {
-            color: #8A008A;
+            color: #FF1493;  /* Darker hot pink on hover */
         }
 
         .button.selected::after {
             content: "";
             display: block;
             height: 2px;
-            background-color: #8A008A;
+            background-color: #4B0082;  /* Dark purple underline */
             position: absolute;
             left: 0;
             right: 0;
@@ -67,8 +67,8 @@
 
         .about-box, .scripts-box, .credits-box {
             position: relative;
-            border: 1px solid #8A008A;
-            background-color: #333;
+            border: 1px solid #4B0082;  /* Dark purple outline */
+            background-color: #333;  /* Darker background for boxes */
             padding: 10px;
             margin: 25px 150px 400px 10px;
             display: none;
@@ -78,22 +78,22 @@
             position: absolute;
             top: -10px;
             left: 10px;
-            background-color: #333;
+            background-color: #333;  /* Background to match the box */
             padding: 0 5px;
-            color: #fff;
+            color: #FF69B4;  /* Hot pink label text */
         }
 
         select {
             width: 100%;
             padding: 5px;
             background-color: #222;
-            color: #fff;
-            border: 1px solid #8A008A;
+            color: #FF69B4;  /* Hot pink text for dropdown */
+            border: 1px solid #4B0082;  /* Dark purple border */
         }
 
         .content-box {
-            border: 1px solid #8A008A;
-            background-color: #444;
+            border: 1px solid #4B0082;  /* Dark purple outline for content boxes */
+            background-color: #444;  /* Dark background for content box */
             padding: 10px;
             margin-top: 10px;
             max-height: 150px;
@@ -102,6 +102,18 @@
 
         input[type="range"] {
             width: 100%;
+        }
+
+        #copy-script-btn {
+            background-color: #FF69B4; /* Hot pink button */
+            color: #fff;
+            border: 1px solid #4B0082; /* Dark purple outline for button */
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #copy-script-btn:hover {
+            background-color: #FF1493; /* Darker hot pink on hover */
         }
     </style>
 </head>
@@ -215,7 +227,7 @@
                 default:
                     contentText = 'Please select an item from the Table of Contents.';
             }
-
+            
             contentBox.innerHTML = `<p>${contentText}</p>`;
         }
 
@@ -229,17 +241,23 @@
                     <h3><strong>Combat Warriors</strong></h3>
                     <p><strong>Features:</strong></p>
                     <ul>
-                        <li><strong>Spinbot:</strong> Adjust how fast you want to spin 360°</li>
-                        <li><strong>ESP (Extra Sensory Perception):</strong></li>
-                        <ul>
-                            <li>Names</li>
-                            <li>Distance</li>
-                            <li>Bounding Box</li>
-                            <li>Health</li>
-                            <li>Apply to Enemies Only</li>
-                        </ul>
-                    </ul>`;
-                copyScriptButton.style.display = 'inline-block';
+                        <li><strong>Spinbot</strong>
+                            <ul>
+                                <li><em>Speed Slider</em> (Adjust how fast you want to spin 360°)</li>
+                            </ul>
+                        </li>
+                        <li><strong>ESP (Extra Sensory Perception)</strong>
+                            <ul>
+                                <li><em>Names</em></li>
+                                <li><em>Distance</em></li>
+                                <li><em>Bounding Box</em></li>
+                                <li><em>Health</em></li>
+                                <li><em>Apply to Enemies Only</em></li>
+                            </ul>
+                        </li>
+                    </ul>
+                `;
+                copyScriptButton.style.display = 'block';
             } else {
                 scriptContentBox.innerHTML = `<p>Please select a script from the dropdown.</p>`;
                 copyScriptButton.style.display = 'none';
