@@ -9,9 +9,9 @@ local TopbarFrame = Instance.new("Frame")
 local UIListLayout = Instance.new("UIListLayout")
 local TextLabel = Instance.new("TextLabel")
 local TabHolderFrame = Instance.new("Frame")
-local SettingsFrame = Instance.new("Frame")
+local SetttingsFrame = Instance.new("Frame")
 
--- Properties:
+--Properties:
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -61,147 +61,43 @@ TabHolderFrame.Position = UDim2.new(0.499077499, 0, -0.647482038, 200)
 TabHolderFrame.Size = UDim2.new(0.955719531, 0, 0, 200)
 TabHolderFrame.SizeConstraint = Enum.SizeConstraint.RelativeXX
 
-SettingsFrame.Name = "SettingsFrame"
-SettingsFrame.Parent = TabHolderFrame
-SettingsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-SettingsFrame.BackgroundTransparency = 1.000
-SettingsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-SettingsFrame.BorderSizePixel = 0
-SettingsFrame.Position = UDim2.new(0.0057915058, 0, 0, 0)
-SettingsFrame.Size = UDim2.new(0, 515, 0, 200)
+SetttingsFrame.Name = "SetttingsFrame"
+SetttingsFrame.Parent = TabHolderFrame
+SetttingsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SetttingsFrame.BackgroundTransparency = 1.000
+SetttingsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+SetttingsFrame.BorderSizePixel = 0
+SetttingsFrame.Position = UDim2.new(0.0057915058, 0, 0, 0)
+SetttingsFrame.Size = UDim2.new(0, 515, 0, 200)
 
--- UI Manager
-local UIManager = {}
+-- Scripts:
 
--- Function to add a new tab dynamically
-function UIManager.AddTab(tabName, contentFunction)
-    local TabButton = Instance.new("TextButton")
-    TabButton.Size = UDim2.new(0, 100, 1, 0) -- Fixed width; adjust as needed
-    TabButton.BackgroundTransparency = 1 -- Make background fully transparent
-    TabButton.BorderSizePixel = 0 -- Remove border
-    TabButton.Text = tabName
-    TabButton.TextColor3 = Color3.fromRGB(255, 51, 255) -- Hot pink text
-    TabButton.Font = Enum.Font.SourceSans
-    TabButton.TextSize = 18
-    TabButton.Parent = TopbarFrame -- Add to the top bar
+local function FUTBOCM_fake_script() -- ScreenGui.UIScript 
+	local script = Instance.new('LocalScript', ScreenGui)
 
-    -- Click functionality
-    TabButton.MouseButton1Click:Connect(function()
-        -- Clear previous content
-        for _, child in pairs(TabHolderFrame:GetChildren()) do
-            if not child:IsA("UIListLayout") then
-                child:Destroy()
-            end
-        end
-        -- Run content function
-        contentFunction(TabHolderFrame)
-    end)
+	local UIManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/NightlyDrum/Nightly-s-Debute/refs/heads/main/NightlyLib'))()
+	local Window = UIManager:CreateWindow("My UI Library")
+	
+	local Tab1 = Window:MakeTab({
+		Name = "Tab 1",
+		Callback = function(container)
+			UIManager.CreateSlider(container, "Volume", 0, 100, 50)
+			UIManager.CreateToggle(container, "Enable Feature", false, function(isEnabled)
+				if isEnabled then
+					UIManager.CreateNotification("Feature Enabled!", 2)
+				else
+					UIManager.CreateNotification("Feature Disabled!", 2)
+				end
+			end)
+		end,
+	})
+	
+	local Tab2 = Window:MakeTab({
+		Name = "Tab 2",
+		Callback = function(container)
+			UIManager.CreateSlider(container, "Brightness", 0, 100, 75)
+		end,
+	})
+	
 end
-
--- Function to create a toggle
-function UIManager.CreateToggle(parent, toggleName, initialState, callback)
-    local ToggleFrame = Instance.new("Frame")
-    ToggleFrame.Size = UDim2.new(1, 0, 0, 30) -- Frame size to fit container
-    ToggleFrame.BackgroundTransparency = 1
-    ToggleFrame.Parent = parent
-
-    -- Create label for the toggle name
-    local ToggleLabel = Instance.new("TextLabel")
-    ToggleLabel.Size = UDim2.new(0, 150, 1, 0) -- Set a fixed width for the label
-    ToggleLabel.Position = UDim2.new(0, 0, 0, 0) -- Align to the far left
-    ToggleLabel.Text = toggleName
-    ToggleLabel.TextColor3 = Color3.fromRGB(255, 105, 180) -- Hotpink text
-    ToggleLabel.BackgroundTransparency = 1
-    ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    ToggleLabel.Parent = ToggleFrame
-
-    -- Create the toggle box using TextButton
-    local ToggleButton = Instance.new("TextButton")
-    ToggleButton.Size = UDim2.new(0, 12, 0, 12) -- Smaller 12x12 toggle box
-    ToggleButton.Position = UDim2.new(0, 160, 0.35, 0) -- Adjust to fit smaller size
-    ToggleButton.BackgroundColor3 = initialState and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(50, 50, 50)
-    ToggleButton.BorderColor3 = Color3.fromRGB(128, 0, 128) -- Purple border
-    ToggleButton.Text = ""
-    ToggleButton.Parent = ToggleFrame
-
-    local isToggled = initialState
-
-    -- Toggle behavior
-    ToggleButton.MouseButton1Click:Connect(function()
-        isToggled = not isToggled
-        ToggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(50, 50, 50)
-        if callback then
-            callback(isToggled)
-        end
-    end)
-
-    return ToggleFrame
-end
-
--- Function to create a slider
-function UIManager.CreateSlider(parent, sliderName, minValue, maxValue, initialValue)
-    local SliderFrame = Instance.new("Frame")
-    SliderFrame.Size = UDim2.new(1, 0, 0, 40) -- Keep a fixed height for the slider frame
-    SliderFrame.BackgroundTransparency = 1 -- Make the slider frame transparent
-    SliderFrame.Parent = parent
-
-    local sliderLabel = Instance.new("TextLabel")
-    sliderLabel.Size = UDim2.new(0.5, 0, 0, 20) -- Adjust label height and make it smaller
-    sliderLabel.Position = UDim2.new(0, 0, 0, 5) -- Position the label
-    sliderLabel.BackgroundTransparency = 1 -- Make the label transparent
-    sliderLabel.Text = sliderName .. ": " .. initialValue
-    sliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    sliderLabel.Parent = SliderFrame
-
-    local SliderBar = Instance.new("Frame")
-    SliderBar.Size = UDim2.new(0.3, 0, 0, 5) -- Smaller slider bar width
-    SliderBar.Position = UDim2.new(0.1, 0, 0, 30) -- Position closer to the label
-    SliderBar.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Background color of the slider bar
-    SliderBar.Parent = SliderFrame
-
-    local SliderIndicator = Instance.new("Frame")
-    SliderIndicator.Size = UDim2.new(0, 10, 1, 0) -- Width of the slider indicator
-    SliderIndicator.Position = UDim2.new(initialValue / maxValue, -5, 0, 0)
-    SliderIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Color of the indicator
-    SliderIndicator.Parent = SliderBar
-
-    local Fill = Instance.new("Frame")
-    Fill.Size = UDim2.new(initialValue / maxValue, 0, 1, 0) -- Filling based on initial value
-    Fill.Position = UDim2.new(0, 0, 0, 0)
-    Fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Fill color
-    Fill.Parent = SliderBar
-
-    -- Slider Dragging Logic
-    local dragging = false
-    SliderBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-        end
-    end)
-
-    SliderBar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-
-    SliderBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-            local mousePos = input.Position.X
-            local sliderPos = SliderBar.AbsolutePosition.X
-            local sliderSize = SliderBar.AbsoluteSize.X
-            local value = math.clamp((mousePos - sliderPos) / sliderSize, 0, 1)
-            SliderIndicator.Position = UDim2.new(value, -5, 0, 0)
-            Fill.Size = UDim2.new(value, 0, 1, 0) -- Update the fill size
-            local newValue = math.floor(value * (maxValue - minValue) + minValue)
-            sliderLabel.Text = sliderName .. ": " .. newValue
-        end
-    end)
-
-    return SliderFrame
-end
-
--- Function to create a window
-function UIManager.CreateWindow(title)
-    TitleLabel.Text = title
-end
+coroutine.wrap(FUTBOCM_fake_script)()
