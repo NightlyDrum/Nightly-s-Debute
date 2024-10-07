@@ -1,117 +1,145 @@
 local UIManager = {}
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
--- Create the main window
-function UIManager:CreateWindow(title)
-	local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
-	local ScreenGui = Instance.new("ScreenGui", PlayerGui)
-	local MainFrame = Instance.new("Frame", ScreenGui)
-	MainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
-	MainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
-	MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+-- Create a ScreenGui and MainContainer
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	local UICorner = Instance.new("UICorner", MainFrame)
-	UICorner.CornerRadius = UDim.new(0, 10)
+local MainContainer = Instance.new("Frame")
+MainContainer.Name = "MainContainer"
+MainContainer.Parent = ScreenGui
+MainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+MainContainer.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+MainContainer.BorderSizePixel = 0
+MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainContainer.Size = UDim2.new(0.5, 0, 0.5, 0)
 
-	local TitleLabel = Instance.new("TextLabel", MainFrame)
-	TitleLabel.Size = UDim2.new(1, 0, 0, 50)
-	TitleLabel.Text = title
-	TitleLabel.BackgroundTransparency = 1
-	TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TitleLabel.Font = Enum.Font.SourceSansBold
-	TitleLabel.TextScaled = true
+-- Create the Topbar
+local TopbarFrame = Instance.new("Frame")
+TopbarFrame.Name = "TopbarFrame"
+TopbarFrame.Parent = MainContainer
+TopbarFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+TopbarFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+TopbarFrame.BorderSizePixel = 0
+TopbarFrame.Position = UDim2.new(0.5, 0, 0.0504, 0)
+TopbarFrame.Size = UDim2.new(1, 0, 0.1, 0)
 
-	local Topbar = Instance.new("Frame", MainFrame)
-	Topbar.Size = UDim2.new(1, 0, 0, 50)
-	Topbar.Position = UDim2.new(0, 0, 0, 0)
-	Topbar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Parent = TopbarFrame
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+UIListLayout.Padding = UDim.new(0, 5)
 
-	local TabHolder = Instance.new("Frame", MainFrame)
-	TabHolder.Size = UDim2.new(1, 0, 1, -50)
-	TabHolder.Position = UDim2.new(0, 0, 0, 50)
-	TabHolder.BackgroundTransparency = 1
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = TopbarFrame
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Position = UDim2.new(0.0129, 0, 0, 0)
+TitleLabel.Size = UDim2.new(0, 200, 0, 40)
+TitleLabel.Font = Enum.Font.FredokaOne
+TitleLabel.Text = "Nightly's Debute |"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 51, 255)
+TitleLabel.TextSize = 14
 
-	UIManager.MainFrame = MainFrame
-	UIManager.Topbar = Topbar
-	UIManager.TabHolder = TabHolder
-
-	return UIManager
-end
+-- Create the TabHolder for content
+local TabHolderFrame = Instance.new("Frame")
+TabHolderFrame.Name = "TabHolderFrame"
+TabHolderFrame.Parent = MainContainer
+TabHolderFrame.AnchorPoint = Vector2.new(0.5, 0)
+TabHolderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+TabHolderFrame.BorderSizePixel = 0
+TabHolderFrame.Position = UDim2.new(0.5, 0, 0.15, 0)
+TabHolderFrame.Size = UDim2.new(0.95, 0, 0.85, 0)
 
 -- Function to create a new tab
-function UIManager:MakeTab(tabInfo)
-	local TabButton = Instance.new("TextButton", self.Topbar)
-	TabButton.Size = UDim2.new(0, 100, 0, 50)
-	TabButton.Text = tabInfo.Name
-	TabButton.BackgroundTransparency = 1
+function UIManager.MakeTab(tabInfo)
+    local TabButton = Instance.new("TextButton")
+    TabButton.Size = UDim2.new(0, 100, 0, 50)
+    TabButton.Text = tabInfo.Name
+    TabButton.BackgroundTransparency = 1
+    TabButton.Parent = TopbarFrame
 
-	TabButton.MouseButton1Click:Connect(function()
-		for _, child in ipairs(self.TabHolder:GetChildren()) do
-			if child:IsA("Frame") then
-				child:Destroy()
-			end
-		end
+    local ContentFrame = Instance.new("Frame")
+    ContentFrame.Size = UDim2.new(1, 0, 1, 0)
+    ContentFrame.BackgroundTransparency = 1
+    ContentFrame.Parent = TabHolderFrame
 
-		local ContentFrame = Instance.new("Frame")
-		ContentFrame.Size = UDim2.new(1, 0, 1, 0)
-		ContentFrame.BackgroundTransparency = 1
-		ContentFrame.Parent = self.TabHolder
+    TabButton.MouseButton1Click:Connect(function()
+        for _, child in ipairs(TabHolderFrame:GetChildren()) do
+            if child:IsA("Frame") then
+                child:Destroy()
+            end
+        end
+        
+        -- Call the provided callback function
+        tabInfo.Callback(ContentFrame)
+    end)
 
-		if tabInfo.Callback then
-			tabInfo.Callback(ContentFrame)
-		end
-	end)
-
-	return TabButton
+    return TabButton
 end
 
--- Function to create a slider
-function UIManager.CreateSlider(container, label, min, max, defaultValue)
-	local SliderLabel = Instance.new("TextLabel")
-	SliderLabel.Size = UDim2.new(0, 100, 0, 50)
-	SliderLabel.Text = label
-	SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	SliderLabel.BackgroundTransparency = 1
-	SliderLabel.Parent = container
+function UIManager.CreateSlider(parent, sliderName, minValue, maxValue, initialValue)
+    local SliderFrame = Instance.new("Frame")
+    SliderFrame.Size = UDim2.new(1, 0, 0, 40) -- Keep a fixed height for the slider frame
+    SliderFrame.BackgroundTransparency = 1 -- Make the slider frame transparent
+    SliderFrame.Parent = parent
 
-	local SliderFrame = Instance.new("Frame")
-	SliderFrame.Size = UDim2.new(1, -20, 0, 10) -- Adjust size
-	SliderFrame.Position = UDim2.new(0, 0, 0, 60) -- Position below the label
-	SliderFrame.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-	SliderFrame.Parent = container
+    local sliderLabel = Instance.new("TextLabel")
+    sliderLabel.Size = UDim2.new(0.5, 0, 0, 20) -- Adjust label height and make it smaller
+    sliderLabel.Position = UDim2.new(0, 0, 0, 5) -- Position the label
+    sliderLabel.BackgroundTransparency = 1 -- Make the label transparent
+    sliderLabel.Text = sliderName .. ": " .. initialValue
+    sliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    sliderLabel.Parent = SliderFrame
 
-	local SliderButton = Instance.new("Frame")
-	SliderButton.Size = UDim2.new(0, 10, 1, 0)
-	SliderButton.BackgroundColor3 = Color3.fromRGB(255, 105, 180)
-	SliderButton.Parent = SliderFrame
+    local SliderBar = Instance.new("Frame")
+    SliderBar.Size = UDim2.new(0.3, 0, 0, 5) -- Smaller slider bar width
+    SliderBar.Position = UDim2.new(0.1, 0, 0, 30) -- Position closer to the label
+    SliderBar.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Background color of the slider bar
+    SliderBar.Parent = SliderFrame
 
-	-- Function to update the slider value based on user input
-	local function updateSlider(value)
-		local percent = (value - min) / (max - min)
-		SliderButton.Position = UDim2.new(percent, 0, 0, 0)
-	end
+    local SliderIndicator = Instance.new("Frame")
+    SliderIndicator.Size = UDim2.new(0, 10, 1, 0) -- Width of the slider indicator
+    SliderIndicator.Position = UDim2.new(initialValue / maxValue, -5, 0, 0)
+    SliderIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Color of the indicator
+    SliderIndicator.Parent = SliderBar
 
-	-- Initialize slider to default value
-	updateSlider(defaultValue)
+    local Fill = Instance.new("Frame")
+    Fill.Size = UDim2.new(initialValue / maxValue, 0, 1, 0) -- Filling based on initial value
+    Fill.Position = UDim2.new(0, 0, 0, 0)
+    Fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Fill color
+    Fill.Parent = SliderBar
 
-	-- Connect input events to update the slider
-	SliderButton.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			local mouse = game.Players.LocalPlayer:GetMouse()
-			local connection
-			connection = game:GetService("RunService").RenderStepped:Connect(function()
-				local sliderPos = math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, SliderFrame.AbsoluteSize.X)
-				local value = math.floor((sliderPos / SliderFrame.AbsoluteSize.X) * (max - min) + min)
-				updateSlider(value)
-			end)
+    -- Slider Dragging Logic
+    local dragging = false
+    SliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+        end
+    end)
 
-			-- Stop updating when the mouse is released
-			input.InputEnded:Connect(function()
-				connection:Disconnect()
-			end)
-		end
-	end)
+    SliderBar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+
+    SliderBar.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local mousePos = input.Position.X
+            local sliderPos = SliderBar.AbsolutePosition.X
+            local sliderSize = SliderBar.AbsoluteSize.X
+            local value = math.clamp((mousePos - sliderPos) / sliderSize, 0, 1)
+            SliderIndicator.Position = UDim2.new(value, -5, 0, 0)
+            Fill.Size = UDim2.new(value, 0, 1, 0) -- Update the fill size
+            local newValue = math.floor(value * (maxValue - minValue) + minValue)
+            sliderLabel.Text = sliderName .. ": " .. newValue
+        end
+    end)
+
+    return SliderFrame
 end
 
 -- Function to create a toggle
