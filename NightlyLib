@@ -201,11 +201,7 @@ function UIManager.CreateSlider(parent, sliderName, minValue, maxValue, initialV
     return SliderFrame
 end
 
--- Example Usage
-UIManager.AddTab("Settings", function(parent)
-    UIManager.CreateToggle(parent, "Enable Feature", true, function(state)
-        print("Feature enabled:", state)
-    end)
-
-    UIManager.CreateSlider(parent, "Volume", 0, 100, 50)
-end)
+-- Function to create a window
+function UIManager.CreateWindow(title)
+    TitleLabel.Text = title
+end
