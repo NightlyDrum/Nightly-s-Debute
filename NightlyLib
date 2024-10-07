@@ -1,76 +1,131 @@
--- NightlyLib Module Script
-local NightlyLib = {}
-local Library = {}
+-- UIManager Module Script
 
--- Create a function to make a window
-function Library:MakeWindow(options)
-    local window = Instance.new("ScreenGui")
-    window.Name = options.Name
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local UIManager = {}
+UIManager.__index = UIManager
 
-    -- Additional setup for the window goes here
-    return window
+-- Create the main UI window
+function UIManager.new()
+	local self = setmetatable({}, UIManager)
+
+	-- Create ScreenGui and MainContainer
+	self.ScreenGui = Instance.new("ScreenGui")
+	self.MainContainer = Instance.new("Frame")
+	self.MainContainer.Size = UDim2.new(0.5, 0, 0.5, 0)
+	self.MainContainer.Position = UDim2.new(0.25, 0, 0.25, 0)
+	self.MainContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	self.MainContainer.Parent = self.ScreenGui
+
+	-- Create Topbar and TabHolder
+	self.TopbarFrame = Instance.new("Frame")
+	self.TopbarFrame.Size = UDim2.new(1, 0, 0, 50)
+	self.TopbarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	self.TopbarFrame.Parent = self.MainContainer
+
+	self.TabHolderFrame = Instance.new("Frame")
+	self.TabHolderFrame.Position = UDim2.new(0, 0, 0, 50)
+	self.TabHolderFrame.Size = UDim2.new(1, 0, 1, -50)
+	self.TabHolderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	self.TabHolderFrame.Parent = self.MainContainer
+
+	-- Show the GUI
+	self.ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	return self
 end
 
--- Create a function to make a tab
-function Library:MakeTab(options)
-    local tab = Instance.new("Frame")
-    tab.Name = options.Name
-    tab.Parent = Library.Window -- Reference to the window created earlier
+-- Function to create tabs
+function UIManager:AddTab(name, callback)
+	local TabButton = Instance.new("TextButton")
+	TabButton.Size = UDim2.new(1 / #self.TopbarFrame:GetChildren(), 0, 1, 0)
+	TabButton.Text = name
+	TabButton.Parent = self.TopbarFrame
 
-    -- Additional setup for the tab goes here
-    return tab
+	local ContentFrame = Instance.new("Frame")
+	ContentFrame.Size = UDim2.new(1, 0, 1, 0)
+	ContentFrame.BackgroundTransparency = 1
+	ContentFrame.Parent = self.TabHolderFrame
+
+	TabButton.MouseButton1Click:Connect(function()
+		for _, child in ipairs(self.TabHolderFrame:GetChildren()) do
+			if child:IsA("Frame") then
+				child.Visible = false
+			end
+		end
+		ContentFrame.Visible = true
+		callback(ContentFrame)
+	end)
+
+	-- Show the first tab by default
+	if #self.TopbarFrame:GetChildren() == 1 then
+		ContentFrame.Visible = true
+	end
 end
 
--- Create a function to add a section
-function Library:AddSection(options)
-    local section = Instance.new("Frame")
-    section.Name = options.Name
-    section.Parent = Library.Tab -- Reference to the tab created earlier
+-- Function to create sliders
+function UIManager:CreateSlider(container, name, min, max, default)
+	local SliderFrame = Instance.new("Frame")
+	SliderFrame.Size = UDim2.new(1, 0, 0, 50)
+	SliderFrame.BackgroundTransparency = 1
+	SliderFrame.Parent = container
 
-    -- Additional setup for the section goes here
-    return section
+	local SliderLabel = Instance.new("TextLabel")
+	SliderLabel.Text = name
+	SliderLabel.Size = UDim2.new(0.5, 0, 1, 0)
+	SliderLabel.Parent = SliderFrame
+
+	local Slider = Instance.new("TextButton")
+	Slider.Size = UDim2.new(0.5, 0, 1, 0)
+	Slider.Position = UDim2.new(0.5, 0, 0, 0)
+	Slider.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+	Slider.Parent = SliderFrame
+
+	Slider.MouseButton1Down:Connect(function()
+		-- Slider logic here
+	end)
+
+	-- Set default value
 end
 
--- Create a function to make a notification
-function Library:MakeNotification(options)
-    local notification = Instance.new("Frame")
-    notification.Name = options.Name
-    notification.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Function to create toggles
+function UIManager:CreateToggle(container, name, default, callback)
+	local ToggleFrame = Instance.new("Frame")
+	ToggleFrame.Size = UDim2.new(1, 0, 0, 50)
+	ToggleFrame.BackgroundTransparency = 1
+	ToggleFrame.Parent = container
 
-    -- Additional setup for the notification goes here
+	local ToggleLabel = Instance.new("TextLabel")
+	ToggleLabel.Text = name
+	ToggleLabel.Size = UDim2.new(0.5, 0, 1, 0)
+	ToggleLabel.Parent = ToggleFrame
+
+	local ToggleBox = Instance.new("TextButton")
+	ToggleBox.Size = UDim2.new(0.2, 0, 0.5, 0)
+	ToggleBox.Position = UDim2.new(0.5, 0, 0.25, 0)
+	ToggleBox.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+	ToggleBox.Parent = ToggleFrame
+
+	ToggleBox.MouseButton1Click:Connect(function()
+		default = not default
+		ToggleBox.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+		callback(default)
+	end)
 end
 
--- Create a function to add a button
-function Library:AddButton(options)
-    local button = Instance.new("TextButton")
-    button.Text = options.Name
-    button.Parent = Library.Tab -- Reference to the tab created earlier
+-- Function to create notifications
+function UIManager:CreateNotification(message, duration)
+	local Notification = Instance.new("TextLabel")
+	Notification.Text = message
+	Notification.Size = UDim2.new(0, 200, 0, 50)
+	Notification.Position = UDim2.new(1, 0, 1, -60)
+	Notification.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+	Notification.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    button.MouseButton1Click:Connect(function()
-        options.Callback()
-    end)
+	-- Animation
+	Notification:TweenPosition(UDim2.new(1, -220, 1, -60), "Out", "Sine", 0.5, true)
+	wait(duration)
+	Notification:TweenPosition(UDim2.new(1, 0, 1, -60), "Out", "Sine", 0.5, true)
+	wait(0.5)
+	Notification:Destroy()
 end
 
--- This allows the library to be used with the syntax you provided
-function NightlyLib:MakeWindow(options)
-    return Library:MakeWindow(options)
-end
-
-function NightlyLib:MakeTab(options)
-    return Library:MakeTab(options)
-end
-
-function NightlyLib:AddSection(options)
-    return Library:AddSection(options)
-end
-
-function NightlyLib:MakeNotification(options)
-    return Library:MakeNotification(options)
-end
-
-function NightlyLib:AddButton(options)
-    return Library:AddButton(options)
-end
-
-return NightlyLib
+return UIManager
