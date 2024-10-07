@@ -1,3 +1,10 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
 local ScreenGui = Instance.new("ScreenGui")
 local Container = Instance.new("Frame")
 local Topbar = Instance.new("Frame")
@@ -5,11 +12,11 @@ local NightlyDebute = Instance.new("TextLabel")
 local Tabs = Instance.new("Frame")
 local Content = Instance.new("Frame")
 
--- Properties:
-
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Setup ScreenGui
+ScreenGui.Parent = playerGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+-- Setup Container Frame
 Container.Name = "Container"
 Container.Parent = ScreenGui
 Container.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
@@ -17,12 +24,14 @@ Container.BorderColor3 = Color3.fromRGB(105, 0, 157)
 Container.Position = UDim2.new(0.0378228799, 0, 0.140287772, 0)
 Container.Size = UDim2.new(0, 747, 0, 383)
 
+-- Setup Topbar
 Topbar.Name = "Topbar"
 Topbar.Parent = Container
 Topbar.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
 Topbar.BorderColor3 = Color3.fromRGB(105, 0, 157)
 Topbar.Size = UDim2.new(0, 747, 0, 33)
 
+-- Setup NightlyDebute Label
 NightlyDebute.Name = "Nightly Debute"
 NightlyDebute.Parent = Topbar
 NightlyDebute.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -34,16 +43,18 @@ NightlyDebute.Size = UDim2.new(0, 129, 0, 33)
 NightlyDebute.Font = Enum.Font.Unknown
 NightlyDebute.Text = "Nightly's Debute |"
 NightlyDebute.TextColor3 = Color3.fromRGB(255, 0, 255)
-NightlyDebute.TextSize = 14.000
+NightlyDebute.TextSize = 12.000 -- Reduced text size
 
+-- Setup Tabs Frame
 Tabs.Name = "Tabs"
 Tabs.Parent = Topbar
 Tabs.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
 Tabs.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Tabs.BorderSizePixel = 0
-Tabs.Position = UDim2.new(0.289156616, 0, 0, 0)
-Tabs.Size = UDim2.new(0, 531, 0, 32)
+Tabs.Position = UDim2.new(0.7, 0, 0, 0) -- Position tabs to the far right
+Tabs.Size = UDim2.new(0.3, 0, 1, 0) -- Adjusted size to fill right space
 
+-- Setup Content Frame
 Content.Name = "Content"
 Content.Parent = Container
 Content.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -52,20 +63,27 @@ Content.Position = UDim2.new(0, 0, 0.103489168, 0)
 Content.Size = UDim2.new(0, 747, 0, 343)
 
 -- Function to create a new tab
-local function createTab(name, index)
+local function createTab(name)
     local Tab = Instance.new("TextButton")
     Tab.Name = name
     Tab.Parent = Tabs
     Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background (to be made transparent)
-    Tab.BackgroundTransparency = 0.5 -- Semi-transparent background
+    Tab.BackgroundTransparency = 1 -- Fully transparent background
     Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Tab.BorderSizePixel = 0
-    Tab.Size = UDim2.new(0, 100, 0, 32) -- Set size as needed
-    Tab.Position = UDim2.new(0, (index * 100), 0, 0) -- Organize tabs horizontally
+    Tab.Size = UDim2.new(0, 100, 0, 24) -- Set smaller size for the tab
     Tab.Font = Enum.Font.Unknown
     Tab.Text = name
     Tab.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text color
-    Tab.TextSize = 14.000
+    Tab.TextSize = 10.000 -- Smaller text size
+
+    -- Hover effect
+    Tab.MouseEnter:Connect(function()
+        Tab.TextColor3 = Color3.fromRGB(255, 255, 0) -- Change text color on hover
+    end)
+    Tab.MouseLeave:Connect(function()
+        Tab.TextColor3 = Color3.fromRGB(255, 255, 255) -- Reset text color
+    end)
 
     -- Connect a function for when the tab is clicked
     Tab.MouseButton1Click:Connect(function()
@@ -73,9 +91,86 @@ local function createTab(name, index)
         for _, child in ipairs(Content:GetChildren()) do
             child.Visible = false
         end
-        -- Show the content associated with this tab (you need to create and assign it)
-        -- Example: Content[name].Visible = true
+        -- Show the content associated with this tab
+        local tabContent = Content:FindFirstChild(name)
+        if tabContent then
+            tabContent.Visible = true
+        end
     end)
 
     return Tab
 end
+
+-- Function to create tab content
+local function createTabContent(name)
+    local TabContent = Instance.new("Frame")
+    TabContent.Name = name
+    TabContent.Parent = Content
+    TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    TabContent.Size = UDim2.new(1, 0, 1, 0)
+    TabContent.Visible = false -- Hide by default
+
+    local label = Instance.new("TextLabel")
+    label.Parent = TabContent
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 24
+    label.Text = "Content for " .. name -- Example content
+end
+
+-- Slider Setup
+local sliderFrame = Instance.new("Frame")
+sliderFrame.Size = UDim2.new(0, 300, 0, 10) -- Width: 300, Height: 10
+sliderFrame.Position = UDim2.new(0.05, 0, 0.1, 0) -- Positioned on the left side
+sliderFrame.BackgroundColor3 = Color3.fromRGB(80, 80, 80) -- Dark gray
+sliderFrame.BorderSizePixel = 0
+sliderFrame.Parent = Container
+sliderFrame.ClipsDescendants = true
+
+-- Setup Fill Frame
+local fillFrame = Instance.new("Frame")
+fillFrame.Size = UDim2.new(0, 0, 1, 0) -- Start with 0 width
+fillFrame.BackgroundColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+fillFrame.BorderSizePixel = 0
+fillFrame.Parent = sliderFrame
+
+-- Setup Slider Button
+local sliderButton = Instance.new("TextButton")
+sliderButton.Size = UDim2.new(0, 20, 0, 20) -- Width: 20, Height: 20
+sliderButton.Position = UDim2.new(0, 0, 0, -5) -- Centered vertically on the slider
+sliderButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White for the button
+sliderButton.Text = ""
+sliderButton.BorderSizePixel = 0
+sliderButton.Parent = sliderFrame
+
+-- Dragging Logic for the Slider
+local dragging = false
+local userInputService = game:GetService("UserInputService")
+
+sliderButton.MouseButton1Down:Connect(function()
+    dragging = true
+end)
+
+userInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local mouseX = input.Position.X
+        local sliderX = sliderFrame.AbsolutePosition.X
+        local sliderWidth = sliderFrame.AbsoluteSize.X
+        local newWidth = math.clamp(mouseX - sliderX, 0, sliderWidth) -- Limit the width to slider's bounds
+        fillFrame.Size = UDim2.new(0, newWidth, 1, 0) -- Adjust fill frame width
+        sliderButton.Position = UDim2.new(0, newWidth - 10, 0, -5) -- Center the button over the fill
+    end
+end)
+
+-- Stop dragging when mouse leaves the slider
+sliderFrame.MouseLeave:Connect(function()
+    dragging = false
+end)
+
+-- Initialize by opening the first tab
+if #tabNames > 0 then
+    local firstTab = tabNames[1].Name
+    Content[firstTab].Visible = true
+end
+
