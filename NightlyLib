@@ -1,85 +1,144 @@
-local UIManager = {}
-local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+-- Gui to Lua
+-- Version: 3.2
 
--- Create a ScreenGui and MainContainer
+-- Instances:
+
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+local MainContainer = Instance.new("Frame")
+local TopbarFrame = Instance.new("Frame")
+local UIListLayout = Instance.new("UIListLayout")
+local TextLabel = Instance.new("TextLabel")
+local TabHolderFrame = Instance.new("Frame")
+local SettingsFrame = Instance.new("Frame")
+
+-- Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
 MainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
 MainContainer.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+MainContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
 MainContainer.BorderSizePixel = 0
 MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
 MainContainer.Size = UDim2.new(0.5, 0, 0.5, 0)
 
--- Create the Topbar
-local TopbarFrame = Instance.new("Frame")
 TopbarFrame.Name = "TopbarFrame"
 TopbarFrame.Parent = MainContainer
 TopbarFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 TopbarFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+TopbarFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TopbarFrame.BorderSizePixel = 0
-TopbarFrame.Position = UDim2.new(0.5, 0, 0.0504, 0)
-TopbarFrame.Size = UDim2.new(1, 0, 0.1, 0)
+TopbarFrame.Position = UDim2.new(0.5, 0, 0.0503597371, 0)
+TopbarFrame.Size = UDim2.new(1, 0, 0.100000001, 0)
 
-local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.Parent = TopbarFrame
 UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 UIListLayout.Padding = UDim.new(0, 5)
 
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Parent = TopbarFrame
-TitleLabel.BackgroundTransparency = 1
-TitleLabel.Position = UDim2.new(0.0129, 0, 0, 0)
-TitleLabel.Size = UDim2.new(0, 200, 0, 40)
-TitleLabel.Font = Enum.Font.FredokaOne
-TitleLabel.Text = "Nightly's Debute |"
-TitleLabel.TextColor3 = Color3.fromRGB(255, 51, 255)
-TitleLabel.TextSize = 14
+TextLabel.Parent = TopbarFrame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0129151288, 0, -2.19550927e-07, 0)
+TextLabel.Size = UDim2.new(0, 129, 0, 27)
+TextLabel.Font = Enum.Font.FredokaOne
+TextLabel.Text = "Nightly's Debute |"
+TextLabel.TextColor3 = Color3.fromRGB(255, 51, 255)
+TextLabel.TextSize = 14.000
 
--- Create the TabHolder for content
-local TabHolderFrame = Instance.new("Frame")
 TabHolderFrame.Name = "TabHolderFrame"
 TabHolderFrame.Parent = MainContainer
 TabHolderFrame.AnchorPoint = Vector2.new(0.5, 0)
 TabHolderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+TabHolderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TabHolderFrame.BorderSizePixel = 0
-TabHolderFrame.Position = UDim2.new(0.5, 0, 0.15, 0)
-TabHolderFrame.Size = UDim2.new(0.95, 0, 0.85, 0)
+TabHolderFrame.Position = UDim2.new(0.499077499, 0, -0.647482038, 200)
+TabHolderFrame.Size = UDim2.new(0.955719531, 0, 0, 200)
+TabHolderFrame.SizeConstraint = Enum.SizeConstraint.RelativeXX
 
--- Function to create a new tab
-function UIManager.MakeTab(tabInfo)
+SettingsFrame.Name = "SettingsFrame"
+SettingsFrame.Parent = TabHolderFrame
+SettingsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SettingsFrame.BackgroundTransparency = 1.000
+SettingsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+SettingsFrame.BorderSizePixel = 0
+SettingsFrame.Position = UDim2.new(0.0057915058, 0, 0, 0)
+SettingsFrame.Size = UDim2.new(0, 515, 0, 200)
+
+-- UI Manager
+local UIManager = {}
+
+-- Function to add a new tab dynamically
+function UIManager.AddTab(tabName, contentFunction)
     local TabButton = Instance.new("TextButton")
-    TabButton.Size = UDim2.new(0, 100, 0, 50)
-    TabButton.Text = tabInfo.Name
-    TabButton.BackgroundTransparency = 1
-    TabButton.Parent = TopbarFrame
+    TabButton.Size = UDim2.new(0, 100, 1, 0) -- Fixed width; adjust as needed
+    TabButton.BackgroundTransparency = 1 -- Make background fully transparent
+    TabButton.BorderSizePixel = 0 -- Remove border
+    TabButton.Text = tabName
+    TabButton.TextColor3 = Color3.fromRGB(255, 51, 255) -- Hot pink text
+    TabButton.Font = Enum.Font.SourceSans
+    TabButton.TextSize = 18
+    TabButton.Parent = TopbarFrame -- Add to the top bar
 
-    local ContentFrame = Instance.new("Frame")
-    ContentFrame.Size = UDim2.new(1, 0, 1, 0)
-    ContentFrame.BackgroundTransparency = 1
-    ContentFrame.Parent = TabHolderFrame
-
+    -- Click functionality
     TabButton.MouseButton1Click:Connect(function()
-        for _, child in ipairs(TabHolderFrame:GetChildren()) do
-            if child:IsA("Frame") then
+        -- Clear previous content
+        for _, child in pairs(TabHolderFrame:GetChildren()) do
+            if not child:IsA("UIListLayout") then
                 child:Destroy()
             end
         end
-        
-        -- Call the provided callback function
-        tabInfo.Callback(ContentFrame)
+        -- Run content function
+        contentFunction(TabHolderFrame)
     end)
-
-    return TabButton
 end
 
+-- Function to create a toggle
+function UIManager.CreateToggle(parent, toggleName, initialState, callback)
+    local ToggleFrame = Instance.new("Frame")
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 30) -- Frame size to fit container
+    ToggleFrame.BackgroundTransparency = 1
+    ToggleFrame.Parent = parent
+
+    -- Create label for the toggle name
+    local ToggleLabel = Instance.new("TextLabel")
+    ToggleLabel.Size = UDim2.new(0, 150, 1, 0) -- Set a fixed width for the label
+    ToggleLabel.Position = UDim2.new(0, 0, 0, 0) -- Align to the far left
+    ToggleLabel.Text = toggleName
+    ToggleLabel.TextColor3 = Color3.fromRGB(255, 105, 180) -- Hotpink text
+    ToggleLabel.BackgroundTransparency = 1
+    ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleLabel.Parent = ToggleFrame
+
+    -- Create the toggle box using TextButton
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Size = UDim2.new(0, 12, 0, 12) -- Smaller 12x12 toggle box
+    ToggleButton.Position = UDim2.new(0, 160, 0.35, 0) -- Adjust to fit smaller size
+    ToggleButton.BackgroundColor3 = initialState and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(50, 50, 50)
+    ToggleButton.BorderColor3 = Color3.fromRGB(128, 0, 128) -- Purple border
+    ToggleButton.Text = ""
+    ToggleButton.Parent = ToggleFrame
+
+    local isToggled = initialState
+
+    -- Toggle behavior
+    ToggleButton.MouseButton1Click:Connect(function()
+        isToggled = not isToggled
+        ToggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(50, 50, 50)
+        if callback then
+            callback(isToggled)
+        end
+    end)
+
+    return ToggleFrame
+end
+
+-- Function to create a slider
 function UIManager.CreateSlider(parent, sliderName, minValue, maxValue, initialValue)
     local SliderFrame = Instance.new("Frame")
     SliderFrame.Size = UDim2.new(1, 0, 0, 40) -- Keep a fixed height for the slider frame
@@ -142,72 +201,11 @@ function UIManager.CreateSlider(parent, sliderName, minValue, maxValue, initialV
     return SliderFrame
 end
 
--- Function to create a toggle
-function UIManager.CreateToggle(container, label, initialState, callback)
-	local ToggleLabel = Instance.new("TextLabel")
-	ToggleLabel.Size = UDim2.new(0, 150, 0, 50) -- Adjust as necessary
-	ToggleLabel.Text = label
-	ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	ToggleLabel.BackgroundTransparency = 1
-	ToggleLabel.Parent = container
+-- Example Usage
+UIManager.AddTab("Settings", function(parent)
+    UIManager.CreateToggle(parent, "Enable Feature", true, function(state)
+        print("Feature enabled:", state)
+    end)
 
-	local ToggleBox = Instance.new("Frame")
-	ToggleBox.Size = UDim2.new(0, 30, 0, 30) -- Size of the toggle box
-	ToggleBox.Position = UDim2.new(0, 0, 0, 10) -- Position next to the label
-	ToggleBox.BackgroundColor3 = initialState and Color3.fromRGB(255, 105, 180) or Color3.fromRGB(40, 40, 40) -- Color based on state
-	ToggleBox.Parent = container
-
-	local UICorner = Instance.new("UICorner")
-	UICorner.CornerRadius = UDim.new(0, 5)
-	UICorner.Parent = ToggleBox
-
-	-- Function to update toggle state
-	local function updateToggle()
-		ToggleBox.BackgroundColor3 = ToggleBox.BackgroundColor3 == Color3.fromRGB(40, 40, 40) and Color3.fromRGB(255, 105, 180) or Color3.fromRGB(40, 40, 40)
-		callback(ToggleBox.BackgroundColor3 == Color3.fromRGB(255, 105, 180))
-	end
-
-	-- Connect click event to toggle state
-	ToggleBox.MouseButton1Click:Connect(updateToggle)
-	updateToggle() -- Initialize with the correct state
-end
-
--- Function to create notifications
-function UIManager.CreateNotification(message, duration)
-	local ScreenGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ScreenGui")
-	local NotificationFrame = Instance.new("Frame")
-	NotificationFrame.Size = UDim2.new(0, 150, 0, 50)
-	NotificationFrame.Position = UDim2.new(1, 0, 1, -60)
-	NotificationFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	NotificationFrame.BorderSizePixel = 0
-	NotificationFrame.BackgroundTransparency = 0.8
-	NotificationFrame.Parent = ScreenGui
-
-	local UICorner = Instance.new("UICorner")
-	UICorner.CornerRadius = UDim.new(0, 5)
-	UICorner.Parent = NotificationFrame
-
-	local NotificationText = Instance.new("TextLabel")
-	NotificationText.Size = UDim2.new(1, 0, 1, 0)
-	NotificationText.Position = UDim2.new(0, 0, 0, 0)
-	NotificationText.Text = message
-	NotificationText.TextColor3 = Color3.fromRGB(255, 105, 180)
-	NotificationText.Font = Enum.Font.SourceSansBold
-	NotificationText.TextScaled = true
-	NotificationText.BackgroundTransparency = 1
-	NotificationText.Parent = NotificationFrame
-
-	NotificationFrame.Position = UDim2.new(1, 0, 1, -60) -- Start off-screen
-	local tweenIn = TweenService:Create(NotificationFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(1, -160, 1, -60), BackgroundTransparency = 0.8})
-	tweenIn:Play()
-
-	task.delay(duration or 3, function()
-		local tweenOut = TweenService:Create(NotificationFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(1, 0, 1, -60), BackgroundTransparency = 1})
-		tweenOut:Play()
-		tweenOut.Completed:Connect(function()
-			NotificationFrame:Destroy()
-		end)
-	end)
-end
-
-return UIManager
+    UIManager.CreateSlider(parent, "Volume", 0, 100, 50)
+end)
