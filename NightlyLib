@@ -1,103 +1,81 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local ScreenGui = Instance.new("ScreenGui")
-local MainContainer = Instance.new("Frame")
-local TopbarFrame = Instance.new("Frame")
-local UIListLayout = Instance.new("UIListLayout")
-local TextLabel = Instance.new("TextLabel")
-local TabHolderFrame = Instance.new("Frame")
-local SetttingsFrame = Instance.new("Frame")
+local Container = Instance.new("Frame")
+local Topbar = Instance.new("Frame")
+local NightlyDebute = Instance.new("TextLabel")
+local Tabs = Instance.new("Frame")
+local Content = Instance.new("Frame")
 
---Properties:
+-- Properties:
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-MainContainer.Name = "MainContainer"
-MainContainer.Parent = ScreenGui
-MainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
-MainContainer.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-MainContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-MainContainer.BorderSizePixel = 0
-MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainContainer.Size = UDim2.new(0.5, 0, 0.5, 0)
+Container.Name = "Container"
+Container.Parent = ScreenGui
+Container.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+Container.BorderColor3 = Color3.fromRGB(105, 0, 157)
+Container.Position = UDim2.new(0.0378228799, 0, 0.140287772, 0)
+Container.Size = UDim2.new(0, 747, 0, 383)
 
-TopbarFrame.Name = "TopbarFrame"
-TopbarFrame.Parent = MainContainer
-TopbarFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-TopbarFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-TopbarFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TopbarFrame.BorderSizePixel = 0
-TopbarFrame.Position = UDim2.new(0.5, 0, 0.0503597371, 0)
-TopbarFrame.Size = UDim2.new(1, 0, 0.100000001, 0)
+Topbar.Name = "Topbar"
+Topbar.Parent = Container
+Topbar.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+Topbar.BorderColor3 = Color3.fromRGB(105, 0, 157)
+Topbar.Size = UDim2.new(0, 747, 0, 33)
 
-UIListLayout.Parent = TopbarFrame
-UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-UIListLayout.Padding = UDim.new(0, 5)
+NightlyDebute.Name = "Nightly Debute"
+NightlyDebute.Parent = Topbar
+NightlyDebute.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+NightlyDebute.BackgroundTransparency = 1.000
+NightlyDebute.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NightlyDebute.BorderSizePixel = 0
+NightlyDebute.Position = UDim2.new(0.0522088371, 0, 0, 0)
+NightlyDebute.Size = UDim2.new(0, 129, 0, 33)
+NightlyDebute.Font = Enum.Font.Unknown
+NightlyDebute.Text = "Nightly's Debute |"
+NightlyDebute.TextColor3 = Color3.fromRGB(255, 0, 255)
+NightlyDebute.TextSize = 14.000
 
-TextLabel.Parent = TopbarFrame
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel.BorderSizePixel = 0
-TextLabel.Position = UDim2.new(0.0129151288, 0, -2.19550927e-07, 0)
-TextLabel.Size = UDim2.new(0, 129, 0, 27)
-TextLabel.Font = Enum.Font.FredokaOne
-TextLabel.Text = "Nightly's Debute |"
-TextLabel.TextColor3 = Color3.fromRGB(255, 51, 255)
-TextLabel.TextSize = 14.000
+Tabs.Name = "Tabs"
+Tabs.Parent = Topbar
+Tabs.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+Tabs.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Tabs.BorderSizePixel = 0
+Tabs.Position = UDim2.new(0.289156616, 0, 0, 0)
+Tabs.Size = UDim2.new(0, 531, 0, 32)
 
-TabHolderFrame.Name = "TabHolderFrame"
-TabHolderFrame.Parent = MainContainer
-TabHolderFrame.AnchorPoint = Vector2.new(0.5, 0)
-TabHolderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-TabHolderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TabHolderFrame.BorderSizePixel = 0
-TabHolderFrame.Position = UDim2.new(0.499077499, 0, -0.647482038, 200)
-TabHolderFrame.Size = UDim2.new(0.955719531, 0, 0, 200)
-TabHolderFrame.SizeConstraint = Enum.SizeConstraint.RelativeXX
+Content.Name = "Content"
+Content.Parent = Container
+Content.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Content.BorderColor3 = Color3.fromRGB(105, 0, 157)
+Content.Position = UDim2.new(0, 0, 0.103489168, 0)
+Content.Size = UDim2.new(0, 747, 0, 343)
 
-SetttingsFrame.Name = "SetttingsFrame"
-SetttingsFrame.Parent = TabHolderFrame
-SetttingsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-SetttingsFrame.BackgroundTransparency = 1.000
-SetttingsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-SetttingsFrame.BorderSizePixel = 0
-SetttingsFrame.Position = UDim2.new(0.0057915058, 0, 0, 0)
-SetttingsFrame.Size = UDim2.new(0, 515, 0, 200)
+-- Function to create a new tab
+local function createTab(name, index)
+    local Tab = Instance.new("TextButton")
+    Tab.Name = name
+    Tab.Parent = Tabs
+    Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background (to be made transparent)
+    Tab.BackgroundTransparency = 0.5 -- Semi-transparent background
+    Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Tab.BorderSizePixel = 0
+    Tab.Size = UDim2.new(0, 100, 0, 32) -- Set size as needed
+    Tab.Position = UDim2.new(0, (index * 100), 0, 0) -- Organize tabs horizontally
+    Tab.Font = Enum.Font.Unknown
+    Tab.Text = name
+    Tab.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text color
+    Tab.TextSize = 14.000
 
--- Scripts:
+    -- Connect a function for when the tab is clicked
+    Tab.MouseButton1Click:Connect(function()
+        -- Hide all content and show specific content for this tab
+        for _, child in ipairs(Content:GetChildren()) do
+            child.Visible = false
+        end
+        -- Show the content associated with this tab (you need to create and assign it)
+        -- Example: Content[name].Visible = true
+    end)
 
-local function FUTBOCM_fake_script() -- ScreenGui.UIScript 
-	local script = Instance.new('LocalScript', ScreenGui)
-
-	local UIManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/NightlyDrum/Nightly-s-Debute/refs/heads/main/NightlyLib'))()
-	local Window = UIManager:CreateWindow("My UI Library")
-	
-	local Tab1 = Window:MakeTab({
-		Name = "Tab 1",
-		Callback = function(container)
-			UIManager.CreateSlider(container, "Volume", 0, 100, 50)
-			UIManager.CreateToggle(container, "Enable Feature", false, function(isEnabled)
-				if isEnabled then
-					UIManager.CreateNotification("Feature Enabled!", 2)
-				else
-					UIManager.CreateNotification("Feature Disabled!", 2)
-				end
-			end)
-		end,
-	})
-	
-	local Tab2 = Window:MakeTab({
-		Name = "Tab 2",
-		Callback = function(container)
-			UIManager.CreateSlider(container, "Brightness", 0, 100, 75)
-		end,
-	})
-	
+    return Tab
 end
-coroutine.wrap(FUTBOCM_fake_script)()
