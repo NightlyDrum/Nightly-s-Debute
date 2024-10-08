@@ -1,12 +1,12 @@
 function UIManager:AddToggle(config)
     local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(0, 100, 0, 30) -- Smaller size for the toggle box
-    toggleFrame.Position = UDim2.new(0, 5, 0, 5) -- Position the toggle frame to the far left with some space
+    toggleFrame.Size = UDim2.new(0, 100, 0, 40) -- Small size for the toggle box
     toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     toggleFrame.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    toggleFrame.Position = UDim2.new(0, 10, 0, 10) -- Position to the far left with some space
 
     local toggleLabel = Instance.new("TextLabel")
-    toggleLabel.Size = UDim2.new(1, -35, 1, 0) -- Adjusted size to fit in the toggle frame
+    toggleLabel.Size = UDim2.new(0.7, 0, 1, 0) -- Label size
     toggleLabel.BackgroundTransparency = 1
     toggleLabel.Text = config.Name or "Toggle"
     toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -15,8 +15,8 @@ function UIManager:AddToggle(config)
     toggleLabel.Parent = toggleFrame
 
     local toggleButton = Instance.new("TextButton")
-    toggleButton.Size = UDim2.new(0, 25, 0, 25) -- Smaller toggle button size
-    toggleButton.Position = UDim2.new(1, -30, 0.5, -12.5) -- Position the button to the right of the label
+    toggleButton.Size = UDim2.new(0, 30, 0, 30) -- Smaller toggle button size
+    toggleButton.Position = UDim2.new(0.8, 0, 0.5, -15) -- Position of the button to the right
     toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
     toggleButton.Text = ""
