@@ -1,4 +1,6 @@
 local UIManager = {}
+UIManager.Tabs = {}
+UIManager.ContentFrame = nil
 
 function UIManager:CreateUI()
     local ScreenGui = Instance.new("ScreenGui")
@@ -98,8 +100,17 @@ function UIManager:MakeTab(tabConfig)
     return newTab
 end
 
--- AddToggle function
 function UIManager:AddToggle(config)
+    local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
+
+    if not tabContent then
+        tabContent = Instance.new("Frame")
+        tabContent.Name = config.Tab .. "_Content"
+        tabContent.Size = UDim2.new(1, 0, 1, 0)
+        tabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        tabContent.Parent = self.ContentFrame
+    end
+
     local toggleFrame = Instance.new("Frame")
     toggleFrame.Size = UDim2.new(0, 100, 0, 40)
     toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
@@ -109,12 +120,16 @@ function UIManager:AddToggle(config)
     toggleLabel.Size = UDim2.new(0.7, 0, 1, 0)
     toggleLabel.BackgroundTransparency = 1
     toggleLabel.Text = config.Name or "Toggle"
+    toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleLabel.Font = Enum.Font.SourceSans
+    toggleLabel.TextScaled = true
     toggleLabel.Parent = toggleFrame
 
     local toggleButton = Instance.new("TextButton")
     toggleButton.Size = UDim2.new(0, 30, 0, 30)
     toggleButton.Position = UDim2.new(0.8, 0, 0.5, -15)
     toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
     toggleButton.Text = ""
     toggleButton.Parent = toggleFrame
 
@@ -129,7 +144,7 @@ function UIManager:AddToggle(config)
         end
     end)
 
-    toggleFrame.Parent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content") -- Add toggle to the specific tab content
+    toggleFrame.Parent = tabContent
 
     return toggleFrame
 end
