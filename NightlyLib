@@ -95,46 +95,46 @@ function UIManager:MakeTab(tabConfig)
     tabContent.Size = UDim2.new(1, 0, 1, 0)
     tabContent.Visible = false
 
-    self[tabName] = {
-        Content = tabContent,
-        AddToggle = function(toggleConfig)
-            local toggleFrame = Instance.new("Frame")
-            toggleFrame.Name = toggleConfig.Name
-            toggleFrame.Parent = tabContent
-            toggleFrame.Size = UDim2.new(1, 0, 0, 40)
-            toggleFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-
-            local toggleLabel = Instance.new("TextLabel")
-            toggleLabel.Parent = toggleFrame
-            toggleLabel.Size = UDim2.new(0.5, 0, 1, 0)
-            toggleLabel.BackgroundTransparency = 1
-            toggleLabel.Text = toggleConfig.Name
-            toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            toggleLabel.Font = Enum.Font.SourceSans
-            toggleLabel.TextScaled = true
-
-            local toggleButton = Instance.new("TextButton")
-            toggleButton.Parent = toggleFrame
-            toggleButton.Size = UDim2.new(0.5, 0, 1, 0)
-            toggleButton.Position = UDim2.new(0.5, 0, 0, 0)
-            toggleButton.BackgroundColor3 = toggleConfig.Default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-            toggleButton.Text = toggleConfig.Default and "On" or "Off"
-            toggleButton.Font = Enum.Font.SourceSans
-            toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            toggleButton.TextScaled = true
-
-            toggleButton.MouseButton1Click:Connect(function()
-                toggleConfig.Default = not toggleConfig.Default
-                toggleButton.BackgroundColor3 = toggleConfig.Default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-                toggleButton.Text = toggleConfig.Default and "On" or "Off"
-                if toggleConfig.Callback then
-                    toggleConfig.Callback(toggleConfig.Default)
-                end
-            end)
-        end
-    }
-
     return newTab
+end
+
+function UIManager:AddToggle(config)
+    local toggleFrame = Instance.new("Frame")
+    toggleFrame.Size = UDim2.new(1, 0, 0, 50) -- Size of the toggle box
+    toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    toggleFrame.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    
+    local toggleLabel = Instance.new("TextLabel")
+    toggleLabel.Size = UDim2.new(0.5, 0, 1, 0) -- Label size
+    toggleLabel.BackgroundTransparency = 1
+    toggleLabel.Text = config.Name or "Toggle"
+    toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleLabel.Font = Enum.Font.SourceSans
+    toggleLabel.TextScaled = true
+    toggleLabel.Parent = toggleFrame
+
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(0, 30, 0, 30) -- Toggle button size
+    toggleButton.Position = UDim2.new(1, -40, 0.5, -15) -- Position of the button
+    toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    toggleButton.Text = ""
+    toggleButton.Parent = toggleFrame
+
+    local isToggled = config.Default or false
+    toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+
+    toggleButton.MouseButton1Click:Connect(function()
+        isToggled = not isToggled
+        toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        if config.Callback then
+            config.Callback(isToggled)
+        end
+    end)
+
+    toggleFrame.Parent = self.ContentFrame:FindFirstChild(config.Tab) .. "_Content" -- Add toggle to the specific tab content
+
+    return toggleFrame
 end
 
 return UIManager
