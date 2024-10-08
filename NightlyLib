@@ -35,12 +35,12 @@ function UIManager:CreateUI()
     Tabs.Position = UDim2.new(0, 0, 0, 0)
     Tabs.Size = UDim2.new(1, 0, 0, 33) -- Make sure Tabs takes full width of Topbar
 
-    -- Add UIListLayout to organize the tabs horizontally
+    -- Add UIListLayout to organize the tabs horizontally and align to the right
     UIListLayout.Parent = Tabs
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 10) -- Adds spacing between tabs
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left -- Align tabs to the left
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right -- Align tabs to the right
 
     TextLabel.Parent = Topbar
     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
