@@ -98,66 +98,23 @@ function UIManager:MakeTab(tabConfig)
     return newTab
 end
 
+-- AddToggle function
 function UIManager:AddToggle(config)
     local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(1, 0, 0, 50) -- Size of the toggle box
+    toggleFrame.Size = UDim2.new(0, 100, 0, 40)
     toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    toggleFrame.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    
+    toggleFrame.Position = UDim2.new(0, 10, 0, 10)
+
     local toggleLabel = Instance.new("TextLabel")
-    toggleLabel.Size = UDim2.new(0.5, 0, 1, 0) -- Label size
+    toggleLabel.Size = UDim2.new(0.7, 0, 1, 0)
     toggleLabel.BackgroundTransparency = 1
     toggleLabel.Text = config.Name or "Toggle"
-    toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleLabel.Font = Enum.Font.SourceSans
-    toggleLabel.TextScaled = true
     toggleLabel.Parent = toggleFrame
 
     local toggleButton = Instance.new("TextButton")
-    toggleButton.Size = UDim2.new(0, 30, 0, 30) -- Toggle button size
-    toggleButton.Position = UDim2.new(1, -40, 0.5, -15) -- Position of the button
+    toggleButton.Size = UDim2.new(0, 30, 0, 30)
+    toggleButton.Position = UDim2.new(0.8, 0, 0.5, -15)
     toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    toggleButton.Text = ""
-    toggleButton.Parent = toggleFrame
-
-    local isToggled = config.Default or false
-    toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-
-    toggleButton.MouseButton1Click:Connect(function()
-        isToggled = not isToggled
-        toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        if config.Callback then
-            config.Callback(isToggled)
-        end
-    end)
-
-    toggleFrame.Parent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content") -- Add toggle to the specific tab content
-
-    return toggleFrame
-end
-
-function UIManager:AddToggle(config)
-    local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(0, 100, 0, 40) -- Small size for the toggle box
-    toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    toggleFrame.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    toggleFrame.Position = UDim2.new(0, 10, 0, 10) -- Position to the far left with some space
-
-    local toggleLabel = Instance.new("TextLabel")
-    toggleLabel.Size = UDim2.new(0.7, 0, 1, 0) -- Label size
-    toggleLabel.BackgroundTransparency = 1
-    toggleLabel.Text = config.Name or "Toggle"
-    toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleLabel.Font = Enum.Font.SourceSans
-    toggleLabel.TextScaled = true
-    toggleLabel.Parent = toggleFrame
-
-    local toggleButton = Instance.new("TextButton")
-    toggleButton.Size = UDim2.new(0, 30, 0, 30) -- Smaller toggle button size
-    toggleButton.Position = UDim2.new(0.8, 0, 0.5, -15) -- Position of the button to the right
-    toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
     toggleButton.Text = ""
     toggleButton.Parent = toggleFrame
 
