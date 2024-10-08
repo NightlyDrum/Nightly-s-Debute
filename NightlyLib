@@ -164,7 +164,7 @@ function UIManager:AddSlider(config)
     -- Create the slider frame
     local sliderFrame = Instance.new("Frame")
     sliderFrame.Size = UDim2.new(0, 200, 0, 60)
-    sliderFrame.Position = UDim2.new(0, 10, 0, 10) -- Position with space
+    sliderFrame.Position = UDim2.new(0, 10, 0, (#tabContent:GetChildren() - 1) * 70 + 10) -- Position with space
     sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     sliderFrame.Parent = tabContent
 
@@ -209,8 +209,7 @@ function UIManager:AddSlider(config)
             local newPosition = UDim2.new(
                 math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1),
                 -10,
-                0,
-                -10
+                0
             )
             sliderKnob.Position = newPosition
 
