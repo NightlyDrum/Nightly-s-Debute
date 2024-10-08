@@ -8,7 +8,7 @@ function UIManager:CreateUI()
     local Tabs = Instance.new("Frame")
     local TextLabel = Instance.new("TextLabel")
     local Content = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout") -- Added layout for organizing tabs
+    local UIListLayout = Instance.new("UIListLayout") -- UIListLayout to organize the tabs
 
     -- Set UI properties
     ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -32,14 +32,15 @@ function UIManager:CreateUI()
     Tabs.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
     Tabs.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Tabs.BorderSizePixel = 0
-    Tabs.Position = UDim2.new(0.289156616, 0, 0, 0)
-    Tabs.Size = UDim2.new(0, 531, 0, 32)
+    Tabs.Position = UDim2.new(0, 0, 0, 0)
+    Tabs.Size = UDim2.new(1, 0, 0, 33) -- Make sure Tabs takes full width of Topbar
 
     -- Add UIListLayout to organize the tabs horizontally
     UIListLayout.Parent = Tabs
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 10) -- Adds spacing between tabs
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left -- Align tabs to the left
 
     TextLabel.Parent = Topbar
     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -74,13 +75,14 @@ function UIManager:CreateTab(tabName)
     newTab.Parent = self.TabsFrame
     newTab.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
     newTab.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    newTab.Size = UDim2.new(0, 100, 0, 32) -- Adjust the width as needed
+    newTab.Size = UDim2.new(0, 100, 1, 0) -- Tabs should fill full height and have fixed width
     newTab.Font = Enum.Font.SourceSans
     newTab.Text = tabName
     newTab.TextColor3 = Color3.fromRGB(255, 255, 255)
     newTab.TextScaled = true
     newTab.TextSize = 14
     newTab.TextWrapped = true
+    newTab.AutoButtonColor = false -- Disable hover color changes if needed
 
     -- Set up functionality to switch tabs
     newTab.MouseButton1Click:Connect(function()
