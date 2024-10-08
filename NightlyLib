@@ -149,6 +149,7 @@ function UIManager:AddToggle(config)
     return toggleFrame
 end
 
+-- Add a slider to a tab
 function UIManager:AddSlider(config)
     local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
 
