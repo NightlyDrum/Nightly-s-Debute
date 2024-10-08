@@ -132,7 +132,7 @@ function UIManager:AddToggle(config)
         end
     end)
 
-    toggleFrame.Parent = self.ContentFrame:FindFirstChild(config.Tab) .. "_Content" -- Add toggle to the specific tab content
+    toggleFrame.Parent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content") -- Add toggle to the specific tab content
 
     return toggleFrame
 end
