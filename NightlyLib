@@ -149,7 +149,7 @@ function UIManager:AddToggle(config)
     return toggleFrame
 end
 
--- Add a slider to a tab
+-- Reset lastPositionY for sliders to start after last toggle
 function UIManager:AddSlider(config)
     local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
 
@@ -164,7 +164,7 @@ function UIManager:AddSlider(config)
     -- Create the slider frame
     local sliderFrame = Instance.new("Frame")
     sliderFrame.Size = UDim2.new(0, 200, 0, 60)
-    sliderFrame.Position = UDim2.new(0, 10, 0, (#tabContent:GetChildren() - 1) * 70 + 10) -- Position with space
+    sliderFrame.Position = UDim2.new(0, 10, 0, lastPositionY) -- Position with space
     sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     sliderFrame.Parent = tabContent
 
@@ -206,14 +206,10 @@ function UIManager:AddSlider(config)
 
     sliderKnob.MouseButton1Down:Connect(function()
         local function moveKnob(input)
-            local newPosition = UDim2.new(
-                math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1),
-                -10,
-                0
-            )
-            sliderKnob.Position = newPosition
+            local xPosition = UDim2.new(0, input.Position.X - sliderBar.AbsolutePosition.X, 0, 0)
+            sliderKnob.Position = UDim2.new(math.clamp(xPosition.X.Scale, 0, 1), -10, 0, -10)
 
-            currentValue = math.floor(newPosition.X.Scale * (config.Max - config.Min) + config.Min)
+            currentValue = math.floor(sliderKnob.Position.X.Scale * (config.Max - config.Min) + config.Min)
             updateValue()
         end
 
@@ -229,7 +225,7 @@ function UIManager:AddSlider(config)
         end)
     end)
 
-    return sliderFrame
+    lastPositionY = lastPositionY + 70 -- Update position for next element
 end
 
 return UIManager
