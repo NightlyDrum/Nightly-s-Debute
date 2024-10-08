@@ -106,14 +106,14 @@ function UIManager:AddToggle(config)
 
     -- Create the toggle frame
     local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(1, 0, 0, 40) -- Adjusted height for spacing
-    toggleFrame.Position = UDim2.new(0, 10, 0, 10) -- Space from the top-left
+    toggleFrame.Size = UDim2.new(0, 100, 0, 30)
     toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     toggleFrame.Parent = tabContent
 
+    -- Create the toggle button
     local toggleButton = Instance.new("TextButton")
     toggleButton.Size = UDim2.new(0, 30, 0, 30)
-    toggleButton.Position = UDim2.new(0, 0, 0, 5) -- Position with space below
+    toggleButton.Position = UDim2.new(0, 0, 0, 0)
     toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
     toggleButton.Text = ""
     toggleButton.Parent = toggleFrame
@@ -126,6 +126,8 @@ function UIManager:AddToggle(config)
         end
     end)
 
+    -- Adjust position for stacking
+    toggleFrame.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() - 1) * 40) -- Increment position based on existing children
     return toggleFrame
 end
 
@@ -143,8 +145,7 @@ function UIManager:AddSlider(config)
 
     -- Create the slider frame
     local sliderFrame = Instance.new("Frame")
-    sliderFrame.Size = UDim2.new(1, 0, 0, 60) -- Adjusted height for spacing
-    sliderFrame.Position = UDim2.new(0, 10, 0, 50) -- Position below the toggle
+    sliderFrame.Size = UDim2.new(0, 200, 0, 60)
     sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     sliderFrame.Parent = tabContent
 
@@ -168,10 +169,13 @@ function UIManager:AddSlider(config)
     -- Slider Knob
     local sliderKnob = Instance.new("TextButton")
     sliderKnob.Size = UDim2.new(0, 20, 0, 20)
-    sliderKnob.Position = UDim2.new((config.Default - config.Min) / (config.Max - config.Min), -10, 0, -10) -- Calculate initial position
+    sliderKnob.Position = UDim2.new((config.Default - config.Min) / (config.Max - config.Min), -10, 0, -10)
     sliderKnob.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
     sliderKnob.Text = ""
     sliderKnob.Parent = sliderBar
+
+    -- Positioning the slider frame to avoid overlap
+    sliderFrame.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() - 1) * 70) -- Increment position based on existing children
 
     local currentValue = config.Default or 0
     local increment = config.Increment or 1
