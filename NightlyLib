@@ -1,105 +1,112 @@
 local UIManager = {}
 
 function UIManager:CreateUI()
-	-- Create UI elements
-	local ScreenGui = Instance.new("ScreenGui")
-	local Container = Instance.new("Frame")
-	local Topbar = Instance.new("Frame")
-	local Tabs = Instance.new("Frame")
-	local TextLabel = Instance.new("TextLabel")
-	local Content = Instance.new("Frame")
+    -- Create UI elements
+    local ScreenGui = Instance.new("ScreenGui")
+    local Container = Instance.new("Frame")
+    local Topbar = Instance.new("Frame")
+    local Tabs = Instance.new("Frame")
+    local TextLabel = Instance.new("TextLabel")
+    local Content = Instance.new("Frame")
+    local UIListLayout = Instance.new("UIListLayout") -- Added layout for organizing tabs
 
-	-- Set UI properties
-	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    -- Set UI properties
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	Container.Name = "Container"
-	Container.Parent = ScreenGui
-	Container.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
-	Container.BorderColor3 = Color3.fromRGB(105, 0, 157)
-	Container.Position = UDim2.new(0.0378228799, 0, 0.140287772, 0)
-	Container.Size = UDim2.new(0, 747, 0, 383)
+    Container.Name = "Container"
+    Container.Parent = ScreenGui
+    Container.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+    Container.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    Container.Position = UDim2.new(0.0378228799, 0, 0.140287772, 0)
+    Container.Size = UDim2.new(0, 747, 0, 383)
 
-	Topbar.Name = "Topbar"
-	Topbar.Parent = Container
-	Topbar.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-	Topbar.BorderColor3 = Color3.fromRGB(105, 0, 157)
-	Topbar.Size = UDim2.new(0, 747, 0, 33)
+    Topbar.Name = "Topbar"
+    Topbar.Parent = Container
+    Topbar.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+    Topbar.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    Topbar.Size = UDim2.new(0, 747, 0, 33)
 
-	Tabs.Name = "Tabs"
-	Tabs.Parent = Topbar
-	Tabs.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-	Tabs.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Tabs.BorderSizePixel = 0
-	Tabs.Position = UDim2.new(0.289156616, 0, 0, 0)
-	Tabs.Size = UDim2.new(0, 531, 0, 32)
+    Tabs.Name = "Tabs"
+    Tabs.Parent = Topbar
+    Tabs.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+    Tabs.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Tabs.BorderSizePixel = 0
+    Tabs.Position = UDim2.new(0.289156616, 0, 0, 0)
+    Tabs.Size = UDim2.new(0, 531, 0, 32)
 
-	TextLabel.Parent = Topbar
-	TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TextLabel.BackgroundTransparency = 1.000
-	TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TextLabel.BorderSizePixel = 0
-	TextLabel.Position = UDim2.new(0.0107095046, 0, 0, 0)
-	TextLabel.Size = UDim2.new(0, 124, 0, 33)
-	TextLabel.Font = Enum.Font.SourceSans
-	TextLabel.Text = "Nightly Debute |"
-	TextLabel.TextColor3 = Color3.fromRGB(255, 0, 255)
-	TextLabel.TextScaled = true
-	TextLabel.TextSize = 17.000
-	TextLabel.TextWrapped = true
+    -- Add UIListLayout to organize the tabs horizontally
+    UIListLayout.Parent = Tabs
+    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 10) -- Adds spacing between tabs
 
-	Content.Name = "Content"
-	Content.Parent = Container
-	Content.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	Content.BorderColor3 = Color3.fromRGB(105, 0, 157)
-	Content.Position = UDim2.new(0, 0, 0.103489168, 0)
-	Content.Size = UDim2.new(0, 747, 0, 343)
+    TextLabel.Parent = Topbar
+    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.BackgroundTransparency = 1.000
+    TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TextLabel.BorderSizePixel = 0
+    TextLabel.Position = UDim2.new(0.0107095046, 0, 0, 0)
+    TextLabel.Size = UDim2.new(0, 124, 0, 33)
+    TextLabel.Font = Enum.Font.SourceSans
+    TextLabel.Text = "Nightly Debute |"
+    TextLabel.TextColor3 = Color3.fromRGB(255, 0, 255)
+    TextLabel.TextScaled = true
+    TextLabel.TextSize = 17.000
+    TextLabel.TextWrapped = true
 
-	-- Store tabs and content for dynamic management
-	self.ScreenGui = ScreenGui
-	self.TabsFrame = Tabs
-	self.ContentFrame = Content
+    Content.Name = "Content"
+    Content.Parent = Container
+    Content.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Content.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    Content.Position = UDim2.new(0, 0, 0.103489168, 0)
+    Content.Size = UDim2.new(0, 747, 0, 343)
+
+    -- Store tabs and content for dynamic management
+    self.ScreenGui = ScreenGui
+    self.TabsFrame = Tabs
+    self.ContentFrame = Content
 end
 
 function UIManager:CreateTab(tabName)
-	local newTab = Instance.new("TextButton")
-	newTab.Name = tabName
-	newTab.Parent = self.TabsFrame
-	newTab.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-	newTab.BorderColor3 = Color3.fromRGB(105, 0, 157)
-	newTab.Size = UDim2.new(0, 100, 0, 32)
-	newTab.Font = Enum.Font.SourceSans
-	newTab.Text = tabName
-	newTab.TextColor3 = Color3.fromRGB(255, 255, 255)
-	newTab.TextScaled = true
-	newTab.TextSize = 14
-	newTab.TextWrapped = true
+    local newTab = Instance.new("TextButton")
+    newTab.Name = tabName
+    newTab.Parent = self.TabsFrame
+    newTab.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+    newTab.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    newTab.Size = UDim2.new(0, 100, 0, 32) -- Adjust the width as needed
+    newTab.Font = Enum.Font.SourceSans
+    newTab.Text = tabName
+    newTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+    newTab.TextScaled = true
+    newTab.TextSize = 14
+    newTab.TextWrapped = true
 
-	-- Set up functionality to switch tabs
-	newTab.MouseButton1Click:Connect(function()
-		for _, child in pairs(self.ContentFrame:GetChildren()) do
-			child.Visible = false
-		end
-		local tabContent = self.ContentFrame:FindFirstChild(tabName .. "_Content")
-		if tabContent then
-			tabContent.Visible = true
-		end
-	end)
+    -- Set up functionality to switch tabs
+    newTab.MouseButton1Click:Connect(function()
+        for _, child in pairs(self.ContentFrame:GetChildren()) do
+            child.Visible = false
+        end
+        local tabContent = self.ContentFrame:FindFirstChild(tabName .. "_Content")
+        if tabContent then
+            tabContent.Visible = true
+        end
+    end)
 end
 
 function UIManager:AddContentToTab(tabName, content)
-	local tabContent = self.ContentFrame:FindFirstChild(tabName .. "_Content")
-	if not tabContent then
-		tabContent = Instance.new("Frame")
-		tabContent.Name = tabName .. "_Content"
-		tabContent.Parent = self.ContentFrame
-		tabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-		tabContent.BorderColor3 = Color3.fromRGB(105, 0, 157)
-		tabContent.Size = UDim2.new(1, 0, 1, 0)
-		tabContent.Visible = false
-	end
+    local tabContent = self.ContentFrame:FindFirstChild(tabName .. "_Content")
+    if not tabContent then
+        tabContent = Instance.new("Frame")
+        tabContent.Name = tabName .. "_Content"
+        tabContent.Parent = self.ContentFrame
+        tabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        tabContent.BorderColor3 = Color3.fromRGB(105, 0, 157)
+        tabContent.Size = UDim2.new(1, 0, 1, 0)
+        tabContent.Visible = false
+    end
 
-	content.Parent = tabContent
+    content.Parent = tabContent
 end
 
 return UIManager
