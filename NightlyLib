@@ -92,6 +92,7 @@ function UIManager:MakeTab(config)
     return Tab
 end
 
+-- Add a toggle to a tab
 function UIManager:AddToggle(config)
     local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
 
@@ -103,40 +104,27 @@ function UIManager:AddToggle(config)
         tabContent.Parent = self.ContentFrame
     end
 
+    -- Create the toggle frame
     local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(0, 100, 0, 40)
-    toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    toggleFrame.Size = UDim2.new(1, 0, 0, 40) -- Adjusted height for spacing
     toggleFrame.Position = UDim2.new(0, 10, 0, 10) -- Space from the top-left
-
-    local toggleLabel = Instance.new("TextLabel")
-    toggleLabel.Size = UDim2.new(0.7, 0, 1, 0)
-    toggleLabel.BackgroundTransparency = 1
-    toggleLabel.Text = config.Name or "Toggle"
-    toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleLabel.Font = Enum.Font.SourceSans
-    toggleLabel.TextScaled = true
-    toggleLabel.Parent = toggleFrame
+    toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    toggleFrame.Parent = tabContent
 
     local toggleButton = Instance.new("TextButton")
     toggleButton.Size = UDim2.new(0, 30, 0, 30)
-    toggleButton.Position = UDim2.new(0.8, 0, 0.5, -15)
-    toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    toggleButton.BorderColor3 = Color3.fromRGB(105, 0, 157)
+    toggleButton.Position = UDim2.new(0, 0, 0, 5) -- Position with space below
+    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
     toggleButton.Text = ""
     toggleButton.Parent = toggleFrame
 
-    local isToggled = config.Default or false
-    toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-
     toggleButton.MouseButton1Click:Connect(function()
-        isToggled = not isToggled
-        toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        config.Default = not config.Default
+        toggleButton.BackgroundColor3 = config.Default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
         if config.Callback then
-            config.Callback(isToggled)
+            config.Callback(config.Default)
         end
     end)
-
-    toggleFrame.Parent = tabContent
 
     return toggleFrame
 end
@@ -155,8 +143,8 @@ function UIManager:AddSlider(config)
 
     -- Create the slider frame
     local sliderFrame = Instance.new("Frame")
-    sliderFrame.Size = UDim2.new(0, 200, 0, 60)
-    sliderFrame.Position = UDim2.new(0, 10, 0, 50) -- Position with space below toggle
+    sliderFrame.Size = UDim2.new(1, 0, 0, 60) -- Adjusted height for spacing
+    sliderFrame.Position = UDim2.new(0, 10, 0, 50) -- Position below the toggle
     sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     sliderFrame.Parent = tabContent
 
@@ -201,7 +189,8 @@ function UIManager:AddSlider(config)
             local newPosition = UDim2.new(
                 math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1),
                 -10,
-                0
+                0,
+                -10
             )
             sliderKnob.Position = newPosition
 
