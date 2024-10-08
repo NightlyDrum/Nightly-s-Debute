@@ -149,4 +149,87 @@ function UIManager:AddToggle(config)
     return toggleFrame
 end
 
+function UIManager:AddSlider(config)
+    local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
+
+    if not tabContent then
+        tabContent = Instance.new("Frame")
+        tabContent.Name = config.Tab .. "_Content"
+        tabContent.Size = UDim2.new(1, 0, 1, 0)
+        tabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        tabContent.Parent = self.ContentFrame
+    end
+
+    -- Create the slider frame
+    local sliderFrame = Instance.new("Frame")
+    sliderFrame.Size = UDim2.new(0, 200, 0, 60)
+    sliderFrame.Position = UDim2.new(0, 10, 0, 10) -- Position with space
+    sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    sliderFrame.Parent = tabContent
+
+    -- Slider Label
+    local sliderLabel = Instance.new("TextLabel")
+    sliderLabel.Size = UDim2.new(1, 0, 0.3, 0)
+    sliderLabel.BackgroundTransparency = 1
+    sliderLabel.Text = config.Name or "Slider"
+    sliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    sliderLabel.Font = Enum.Font.SourceSans
+    sliderLabel.TextScaled = true
+    sliderLabel.Parent = sliderFrame
+
+    -- Slider Bar
+    local sliderBar = Instance.new("Frame")
+    sliderBar.Size = UDim2.new(1, 0, 0.2, 0)
+    sliderBar.Position = UDim2.new(0, 0, 0.3, 0)
+    sliderBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    sliderBar.Parent = sliderFrame
+
+    -- Slider Knob
+    local sliderKnob = Instance.new("TextButton")
+    sliderKnob.Size = UDim2.new(0, 20, 0, 20)
+    sliderKnob.Position = UDim2.new((config.Default - config.Min) / (config.Max - config.Min), -10, 0, -10) -- Calculate initial position
+    sliderKnob.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    sliderKnob.Text = ""
+    sliderKnob.Parent = sliderBar
+
+    local currentValue = config.Default or 0
+    local increment = config.Increment or 1
+
+    -- Slider functionality
+    local function updateValue()
+        local value = math.floor(currentValue / increment) * increment
+        if config.Callback then
+            config.Callback(value)
+        end
+    end
+
+    sliderKnob.MouseButton1Down:Connect(function()
+        local function moveKnob(input)
+            local newPosition = UDim2.new(
+                math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1),
+                -10,
+                0,
+                -10
+            )
+            sliderKnob.Position = newPosition
+
+            currentValue = math.floor(newPosition.X.Scale * (config.Max - config.Min) + config.Min)
+            updateValue()
+        end
+
+        -- Connect to dragging
+        local connection
+        connection = game:GetService("UserInputService").InputChanged:Connect(moveKnob)
+
+        -- Stop dragging on release
+        game:GetService("UserInputService").InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                connection:Disconnect()
+            end
+        end)
+    end)
+
+    return sliderFrame
+end
+
 return UIManager
