@@ -62,42 +62,34 @@ function UIManager:CreateUI()
     self.ContentFrame = Content
 end
 
-function UIManager:MakeTab(tabConfig)
-    local tabName = tabConfig.Name or "Tab"
+-- Create a tab
+function UIManager:MakeTab(config)
+    local Tab = Instance.new("TextButton")
+    Tab.Name = config.Name
+    Tab.Size = UDim2.new(0, 100, 1, 0)
+    Tab.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Tab.Text = config.Name
+    Tab.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab.Parent = self.Tabs
 
-    local newTab = Instance.new("TextButton")
-    newTab.Name = tabName
-    newTab.Parent = self.TabsFrame
-    newTab.Size = UDim2.new(0, 100, 1, 0)
-    newTab.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-    newTab.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    newTab.Font = Enum.Font.SourceSans
-    newTab.Text = tabName
-    newTab.TextColor3 = Color3.fromRGB(255, 255, 255)
-    newTab.TextScaled = true
-    newTab.TextWrapped = true
+    table.insert(self.Tabs, Tab)
 
-    -- Add functionality to switch to tab content
-    newTab.MouseButton1Click:Connect(function()
-        for _, child in pairs(self.ContentFrame:GetChildren()) do
-            child.Visible = false
+    Tab.MouseButton1Click:Connect(function()
+        -- Hide other tabs content
+        for _, child in ipairs(self.ContentFrame:GetChildren()) do
+            if child:IsA("Frame") then
+                child.Visible = false
+            end
         end
-        local tabContent = self.ContentFrame:FindFirstChild(tabName .. "_Content")
+
+        -- Show the selected tab content
+        local tabContent = self.ContentFrame:FindFirstChild(config.Name .. "_Content")
         if tabContent then
             tabContent.Visible = true
         end
     end)
 
-    -- Set up content for the tab
-    local tabContent = Instance.new("Frame")
-    tabContent.Name = tabName .. "_Content"
-    tabContent.Parent = self.ContentFrame
-    tabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    tabContent.BorderColor3 = Color3.fromRGB(105, 0, 157)
-    tabContent.Size = UDim2.new(1, 0, 1, 0)
-    tabContent.Visible = false
-
-    return newTab
+    return Tab
 end
 
 function UIManager:AddToggle(config)
@@ -114,7 +106,7 @@ function UIManager:AddToggle(config)
     local toggleFrame = Instance.new("Frame")
     toggleFrame.Size = UDim2.new(0, 100, 0, 40)
     toggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    toggleFrame.Position = UDim2.new(0, 10, 0, 10)
+    toggleFrame.Position = UDim2.new(0, 10, 0, 10) -- Space from the top-left
 
     local toggleLabel = Instance.new("TextLabel")
     toggleLabel.Size = UDim2.new(0.7, 0, 1, 0)
@@ -149,7 +141,7 @@ function UIManager:AddToggle(config)
     return toggleFrame
 end
 
--- Reset lastPositionY for sliders to start after last toggle
+-- Add a slider to a tab
 function UIManager:AddSlider(config)
     local tabContent = self.ContentFrame:FindFirstChild(config.Tab .. "_Content")
 
@@ -164,7 +156,7 @@ function UIManager:AddSlider(config)
     -- Create the slider frame
     local sliderFrame = Instance.new("Frame")
     sliderFrame.Size = UDim2.new(0, 200, 0, 60)
-    sliderFrame.Position = UDim2.new(0, 10, 0, lastPositionY) -- Position with space
+    sliderFrame.Position = UDim2.new(0, 10, 0, 50) -- Position with space below toggle
     sliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     sliderFrame.Parent = tabContent
 
@@ -206,10 +198,14 @@ function UIManager:AddSlider(config)
 
     sliderKnob.MouseButton1Down:Connect(function()
         local function moveKnob(input)
-            local xPosition = UDim2.new(0, input.Position.X - sliderBar.AbsolutePosition.X, 0, 0)
-            sliderKnob.Position = UDim2.new(math.clamp(xPosition.X.Scale, 0, 1), -10, 0, -10)
+            local newPosition = UDim2.new(
+                math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1),
+                -10,
+                0
+            )
+            sliderKnob.Position = newPosition
 
-            currentValue = math.floor(sliderKnob.Position.X.Scale * (config.Max - config.Min) + config.Min)
+            currentValue = math.floor(newPosition.X.Scale * (config.Max - config.Min) + config.Min)
             updateValue()
         end
 
@@ -225,7 +221,7 @@ function UIManager:AddSlider(config)
         end)
     end)
 
-    lastPositionY = lastPositionY + 70 -- Update position for next element
+    return sliderFrame
 end
 
 return UIManager
