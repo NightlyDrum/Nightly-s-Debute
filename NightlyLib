@@ -36,7 +36,7 @@ function UIManager:CreateUI()
     UIListLayout.Parent = Tabs
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 10)
+    UIListLayout.Padding = UDim.new(0, 5) -- Adjust padding between tabs
     UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
 
     TextLabel.Parent = Topbar
@@ -67,14 +67,13 @@ function UIManager:MakeTab(tabConfig)
     local newTab = Instance.new("TextButton")
     newTab.Name = tabName
     newTab.Parent = self.TabsFrame
-    newTab.Size = UDim2.new(0, 100, 1, 0)
+    newTab.Size = UDim2.new(0, 90, 1, 0) -- Adjust the width and height of the tabs
     newTab.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
     newTab.BorderColor3 = Color3.fromRGB(105, 0, 157)
     newTab.Font = Enum.Font.SourceSans
     newTab.Text = tabName
     newTab.TextColor3 = Color3.fromRGB(255, 255, 255)
-    newTab.TextScaled = true
-    newTab.TextSize = 14
+    newTab.TextSize = 12 -- Make the text smaller
     newTab.TextWrapped = true
     newTab.AutoButtonColor = false
 
